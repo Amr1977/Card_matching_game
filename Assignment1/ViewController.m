@@ -10,6 +10,7 @@
 #import "Deck.h"
 #import "PlayingCardDeck.h"
 #import "Playingcard.h"
+#import "CardMatchingGame.h"
 
 @interface ViewController ()
 
@@ -17,16 +18,28 @@
 @property (nonatomic) int flipCount;
 @property (strong, nonatomic) PlayingCardDeck * deck;
 @property (strong, nonatomic) PlayingCard * selectedPlayingCard;
+@property (strong, nonatomic) CardMatchingGame *game;
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
 
 
 @end
 
 @implementation ViewController
 
+-(CardMatchingGame *) game{
+    if (!_game){
+        _game=[[CardMatchingGame alloc] initWithCardCount:[self.cardButtons count] usingDeck:[self createDeck]];
+    }
+    return _game;
+}
+
+-(PlayingCardDeck *) createDeck{
+    return [[PlayingCardDeck alloc] init];
+}
 
 - (PlayingCardDeck *) deck{
     if(! _deck){
-        _deck= [[PlayingCardDeck alloc] init];
+        _deck= [self createDeck];
     }
     return _deck;
 }
@@ -38,25 +51,10 @@
 }
 
 - (IBAction)touchCardButton:(UIButton *)sender {
-    NSString *title=@"";
-    if ([sender.currentTitle length ]){
-        [sender setBackgroundImage:[UIImage imageNamed:@"cardback"]
-                          forState:UIControlStateNormal];
-        [sender setTitle:@"" forState:UIControlStateNormal];
-    }else{
-        
-        self.selectedPlayingCard = (PlayingCard *) [[self deck] drawRandomCard];
-        if (self.selectedPlayingCard){
-            title = [ self.selectedPlayingCard contents];
-            [sender setBackgroundImage:[UIImage imageNamed:@"cardfront"]
-                              forState:UIControlStateNormal];
-            [sender setTitle:title forState:UIControlStateNormal];
-        } else{
-            NSLog(@"Out of Cards");
-        }
-    }
-    NSLog(@"Title: %@ ", title);
+    int chosenButtonIndex=[self.cardButtons indexOfObject:sender];
+    [self.game chooseCardAtIndex:chosenButtonIndex];
+    [self updateUI];
+    self.flipCount++;
     
-            self.flipCount++;
   }
 @end

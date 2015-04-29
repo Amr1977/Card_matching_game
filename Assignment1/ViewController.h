@@ -10,8 +10,4 @@
 
 @interface ViewController : UIViewController
 
-
-
-
 @end
-

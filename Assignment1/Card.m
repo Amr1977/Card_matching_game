@@ -11,21 +11,21 @@
 @implementation Card
 @synthesize contents = _contents;
 
-- (NSString *) contents{
-    return _contents;
+- (NSString *)contents {
+  return _contents;
 }
--(void) setContents:(NSString *)contents{
-    _contents=contents;
+
+- (void)setContents:(NSString *)contents {
+  _contents = contents;
 }
--(int) match:(NSArray *) otherCards
-{
-    int score=0;
-    for(Card *card in otherCards){
-        if ([self.contents isEqualToString:card.contents]){
-            score=1;
-        }
+- (NSUInteger)match:(NSArray *)otherCards {
+  NSUInteger score = 0;
+  for (Card *card in otherCards) {
+    if ([self.contents isEqualToString:card.contents]) {
+      score = 1;
     }
-    return score;
+  }
+  return score;
 }
 
 @end

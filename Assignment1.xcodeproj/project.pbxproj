@@ -78,7 +78,7 @@
 		07704B821AE924D20045D9BA = {
 			isa = PBXGroup;
 			children = (
-				07704B8D1AE924D20045D9BA /* Assignment1 */,
+				07704B8D1AE924D20045D9BA /* Assignments */,
 				07704BA71AE924D20045D9BA /* Assignment1Tests */,
 				07704B8C1AE924D20045D9BA /* Products */,
 			);
@@ -93,7 +93,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		07704B8D1AE924D20045D9BA /* Assignment1 */ = {
+		07704B8D1AE924D20045D9BA /* Assignments */ = {
 			isa = PBXGroup;
 			children = (
 				07704BB41AE9356E0045D9BA /* Model */,
@@ -104,6 +104,7 @@
 				07704B9D1AE924D20045D9BA /* LaunchScreen.xib */,
 				07704B8E1AE924D20045D9BA /* Supporting Files */,
 			);
+			name = Assignments;
 			path = Assignment1;
 			sourceTree = "<group>";
 		};

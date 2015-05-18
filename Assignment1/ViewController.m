@@ -20,16 +20,27 @@
 @property(strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
 @property(weak, nonatomic) IBOutlet UILabel *scoreLabel;
 
+
 @end
 
 @implementation ViewController
+- (IBAction)reset:(id)sender {
+    // reset score
+    [self game:YES];
+    [self updateUI];
+    //reset all cards
+}
 
-- (CardMatchingGame *)game {
-  if (!_game) {
+- (CardMatchingGame *)game:(BOOL)newGame {
+  if ((!_game)||(newGame)) {
     _game = [[CardMatchingGame alloc] initWithCardCount:[self.cardButtons count]
                                               usingDeck:[self createDeck]];
   }
   return _game;
+}
+
+- (CardMatchingGame *)game {
+    return [self game:NO];
 }
 
 - (PlayingCardDeck *)createDeck {

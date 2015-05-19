@@ -65,12 +65,14 @@
     NSLog(@"matching: %@, rank: %lu, suit: %@", [self contents],
           (unsigned long)[self rank], [self suit]);
     NSLog(@"match set completed %lu", [otherCards count] + 1);
+
+    // match self with all of them
     for (NSInteger i = 0; i < (numberOfCardsToMatch - 1); i++) {
       PlayingCard *otherCard = otherCards[i];
       NSLog(@"matching: %@, rank: %lu, suit: %@", [otherCard contents],
             (unsigned long)[otherCard rank], [otherCard suit]);
       if (otherCard.rank == self.rank) {
-        NSLog(@"Rank matched :)");
+        NSLog(@"Rank matched :) %@ %@", [otherCard contents], [self contents]);
 
         // In 3-card-match mode, it should be possible to get some (although a
         // significantly lesser amount of) points for picking 3 cards of which
@@ -78,24 +80,28 @@
         score += 4;
       } else if ([otherCard.suit caseInsensitiveCompare:self.suit] ==
                  NSOrderedSame) {
-        NSLog(@"suit matched :)");
+        NSLog(@"suit matched :) %@ %@", [otherCard contents], [self contents]);
         score += 1;
       }
     }
 
+    // match them with each other
     for (NSInteger i = 0; i < (numberOfCardsToMatch - 2); i++) {
-      for (NSInteger j = (i + 1); i < (numberOfCardsToMatch - 1); i++) {
+      for (NSInteger j = (i + 1); j < (numberOfCardsToMatch - 1); j++) {
         if ([otherCards[i] rank] == [otherCards[j] rank]) {
-          NSLog(@"Rank matched :)");
+          NSLog(@"Rank matched :) %@ %@", [otherCards[i] contents],
+                [otherCards[j] contents]);
           score += 4;
         } else if ([[otherCards[i] suit]
-                       caseInsensitiveCompare:[otherCards[i] suit]] ==
+                       caseInsensitiveCompare:[otherCards[j] suit]] ==
                    NSOrderedSame) {
-          NSLog(@"suit matched :)");
+          NSLog(@"suit matched :) %@ %@", [otherCards[i] contents],
+                [otherCards[j] contents]);
           score += 1;
         }
       }
     }
+
     NSLog(@"Returned score: %lu", score);
   } else {
     NSLog(@"match: game mode: %lu, other cards count: %lu",

@@ -17,13 +17,14 @@
 @property(strong, nonatomic)
     PlayingCardDeck *deck;  // this is supposed to be in the model ?
 @property(strong, nonatomic)
-    PlayingCard *selectedPlayingCard;  // move to model ?
+    PlayingCard *selectedPlayingCard;                 // move to model ?
 @property(strong, nonatomic) CardMatchingGame *game;  // pointer to the model
 @property(strong, nonatomic) IBOutletCollection(UIButton)
     NSArray *cardButtons;  // buttons(cards) are put in an array
 @property(weak, nonatomic) IBOutlet UILabel *scoreLabel;
 @property(weak, nonatomic) IBOutlet UISegmentedControl *gameModeSegmentControl;
 @property NSInteger numberOfCardsToMatch;
+@property(weak, nonatomic) IBOutlet UILabel *lastAction;
 
 @end
 
@@ -113,6 +114,7 @@
     cardButton.enabled = !card.isMatched;
     self.scoreLabel.text =
         [NSString stringWithFormat:@"Score: %ld", (long)self.game.score];
+    self.lastAction.text = [[self game] lastAction];
   }
 }
 

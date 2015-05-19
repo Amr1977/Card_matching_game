@@ -68,11 +68,13 @@ static const int COST_TO_CHOOSE = 1;
       // match against other chosen cards
       // create an array to hold other chosen cards pointers
       NSMutableArray *chosenCards = [[NSMutableArray alloc] init];
-
+      NSMutableArray *contents = [[NSMutableArray alloc] init];
+      [contents addObject:[card contents]];
       // get all chosen cards in an array
       for (Card *otherCard in self.cards) {
         if (otherCard.isChosen && !otherCard.isMatched) {
           [chosenCards addObject:otherCard];
+          [contents addObject:[otherCard contents]];
           // if reached the allowed number of chosen cards
           if ([chosenCards count] == ([self numberOfCardsToMatch] - 1)) {
             break;
@@ -97,6 +99,11 @@ static const int COST_TO_CHOOSE = 1;
             addedScore += 1;
           }
           self.score += addedScore;
+          [self setLastAction:[NSString
+                                  stringWithFormat:
+                                      @"Matched %@ for %lu",
+                                      [contents componentsJoinedByString:@" "],
+                                      addedScore]];
           NSLog(@"Added score: %ld", (long)addedScore);
           // turn all other cards to be matched (get them out of game)
           for (PlayingCard *chosenCard in chosenCards) {
@@ -107,6 +114,11 @@ static const int COST_TO_CHOOSE = 1;
 
         } else {
           self.score -= MISMATCH_PENALTY;
+          [self setLastAction:[NSString
+                                  stringWithFormat:
+                                      @"Mismatched %@ for -%d",
+                                      [contents componentsJoinedByString:@" "],
+                                      MISMATCH_PENALTY]];
           // turn back the other cards
           for (PlayingCard *chosenCard in chosenCards) {
             chosenCard.chosen = NO;

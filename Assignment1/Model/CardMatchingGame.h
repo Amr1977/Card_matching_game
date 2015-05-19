@@ -24,6 +24,8 @@
 
 @property(nonatomic, readonly) NSInteger score;
 
+@property(nonatomic) NSString *lastAction;
+
 @property(nonatomic) NSUInteger numberOfCardsToMatch;
 
 @end

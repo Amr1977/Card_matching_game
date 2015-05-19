@@ -69,6 +69,8 @@ static const int COST_TO_CHOOSE = 1;
       // match against other chosen cards
       //create an array to hold other chosen cards pointers
       NSMutableArray *chosenCards=[[NSMutableArray alloc] init];
+        
+        //get all chosen cards in an array
       for (Card *otherCard in self.cards) {
         if (otherCard.isChosen && !otherCard.isMatched) {
             [chosenCards addObject:otherCard];
@@ -78,6 +80,7 @@ static const int COST_TO_CHOOSE = 1;
             }
         }
       }
+        NSLog(@"Other chosen cards: %lu , game mode: %lu",[chosenCards count]+1,[self numberOfCardsToMatch]);
         //only if reached the needed number of cards to match
         if([chosenCards count]==([self numberOfCardsToMatch]-1)){
             //calculate the score
@@ -85,26 +88,32 @@ static const int COST_TO_CHOOSE = 1;
             
             //if we have a match
             if (matchScore) {
-                self.score += matchScore * MATCH_BONUS;
+                //Adjusted for matching more than two cards: divide by number of cards to match
+                NSInteger addedScore=(matchScore * MATCH_BONUS)/([self numberOfCardsToMatch]-1);
+                if (!addedScore){
+                    addedScore+=1;
+                }
+                self.score += addedScore;
+                NSLog(@"Added score: %ld",(long)addedScore);
+                //turn all other cards to be matched (get them out of game)
                 for (PlayingCard * chosenCard in chosenCards) {
                     chosenCard.matched = YES;
                 }
+                //and turn this card out of game too
                 card.matched = YES;
                 
             } else {
+                
                 self.score -= MISMATCH_PENALTY;
+                //turn back the other cards
                 for (PlayingCard * chosenCard in chosenCards) {
                     chosenCard.chosen = NO;
                 }
-                
             }
-            //break;  // can only choose 2 cards for now
-            
-            self.score -= COST_TO_CHOOSE;
-            
-            card.chosen = YES;
         }
-        
+        self.score -= COST_TO_CHOOSE;
+        //in all cases last choosen card will be face up
+        card.chosen = YES;
     }
   }
 }

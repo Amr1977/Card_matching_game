@@ -64,7 +64,9 @@ static const int COST_TO_CHOOSE = 1;
   if (!card.isMatched) {  // if not previously matched (not out of the game)
     if (card.isChosen) {  // if already chosen then toggle
       card.chosen = NO;
+        [self setLastAction:@""];
     } else {
+        [self setLastAction:[card contents]];
       // match against other chosen cards
       // create an array to hold other chosen cards pointers
       NSMutableArray *chosenCards = [[NSMutableArray alloc] init];

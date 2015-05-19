@@ -60,7 +60,9 @@ static const int COST_TO_CHOOSE = 1;
 
 - (void)chooseCardAtIndex:(NSUInteger)index {
   PlayingCard *card = (PlayingCard *)[self cardAtIndex:index];
-
+    if (!card){
+        return;
+    }
   if (!card.isMatched) {  // if not previously matched (not out of the game)
     if (card.isChosen) {  // if already chosen then toggle
       card.chosen = NO;

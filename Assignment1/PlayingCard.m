@@ -57,51 +57,56 @@
   return [[self rankStrings] count] - 1;
 }
 
-- (NSUInteger)match:(NSArray *)otherCards numberOfCardsToMatch:(NSUInteger) numberOfCardsToMatch{
-    NSUInteger score = 0;
-    //make sure number of cards in othercards array is as expected
-    if ([otherCards count] == (numberOfCardsToMatch-1)) {
-        NSLog(@"matching: %@, rank: %lu, suit: %@",[self contents], (unsigned long)[self rank], [self suit]);
-        NSLog(@"match set completed %lu",[otherCards count]+1);
-        for (NSInteger i=0; i < (numberOfCardsToMatch-1); i++) {
-            
-            PlayingCard *otherCard = otherCards[i];
-            NSLog(@"matching: %@, rank: %lu, suit: %@",[otherCard contents], (unsigned long)[otherCard rank], [otherCard suit]);
-            if (otherCard.rank == self.rank) {
-                NSLog(@"Rank matched :)");
-                
-                //In 3-card-match mode, it should be possible to get some (although a significantly lesser amount of) points for picking 3 cards of which only 2 match in some way.
-                score += 4;
-            } else if ([otherCard.suit caseInsensitiveCompare:self.suit]==NSOrderedSame) {
-                NSLog(@"suit matched :)");
-                score += 1;
-            }
-        }
-        
-        for (NSInteger i=0; i < (numberOfCardsToMatch-2); i++) {
-            for (NSInteger j=(i+1); i < (numberOfCardsToMatch-1); i++) {
-                if ([otherCards[i] rank] == [otherCards[j] rank]) {
-                    NSLog(@"Rank matched :)");
-                    score += 4;
-                }else if ([[otherCards[i] suit] caseInsensitiveCompare:[otherCards[i] suit]]==NSOrderedSame) {
-                    NSLog(@"suit matched :)");
-                    score += 1;
-                }
-            }
-            
-        }
-        NSLog(@"Returned score: %lu",score);
-    } else{
-        NSLog(@"match: game mode: %lu, other cards count: %lu",numberOfCardsToMatch,(unsigned long)[otherCards count]);
+- (NSUInteger)match:(NSArray *)otherCards
+    numberOfCardsToMatch:(NSUInteger)numberOfCardsToMatch {
+  NSUInteger score = 0;
+  // make sure number of cards in othercards array is as expected
+  if ([otherCards count] == (numberOfCardsToMatch - 1)) {
+    NSLog(@"matching: %@, rank: %lu, suit: %@", [self contents],
+          (unsigned long)[self rank], [self suit]);
+    NSLog(@"match set completed %lu", [otherCards count] + 1);
+    for (NSInteger i = 0; i < (numberOfCardsToMatch - 1); i++) {
+      PlayingCard *otherCard = otherCards[i];
+      NSLog(@"matching: %@, rank: %lu, suit: %@", [otherCard contents],
+            (unsigned long)[otherCard rank], [otherCard suit]);
+      if (otherCard.rank == self.rank) {
+        NSLog(@"Rank matched :)");
+
+        // In 3-card-match mode, it should be possible to get some (although a
+        // significantly lesser amount of) points for picking 3 cards of which
+        // only 2 match in some way.
+        score += 4;
+      } else if ([otherCard.suit caseInsensitiveCompare:self.suit] ==
+                 NSOrderedSame) {
+        NSLog(@"suit matched :)");
+        score += 1;
+      }
     }
-    
-    
-    
-    return score;
+
+    for (NSInteger i = 0; i < (numberOfCardsToMatch - 2); i++) {
+      for (NSInteger j = (i + 1); i < (numberOfCardsToMatch - 1); i++) {
+        if ([otherCards[i] rank] == [otherCards[j] rank]) {
+          NSLog(@"Rank matched :)");
+          score += 4;
+        } else if ([[otherCards[i] suit]
+                       caseInsensitiveCompare:[otherCards[i] suit]] ==
+                   NSOrderedSame) {
+          NSLog(@"suit matched :)");
+          score += 1;
+        }
+      }
+    }
+    NSLog(@"Returned score: %lu", score);
+  } else {
+    NSLog(@"match: game mode: %lu, other cards count: %lu",
+          numberOfCardsToMatch, (unsigned long)[otherCards count]);
+  }
+
+  return score;
 }
 
 - (NSUInteger)match:(NSArray *)otherCards {
-    return [self match:otherCards numberOfCardsToMatch:1];
+  return [self match:otherCards numberOfCardsToMatch:1];
 }
 
 @end

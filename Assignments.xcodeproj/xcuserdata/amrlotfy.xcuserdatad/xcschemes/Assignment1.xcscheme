@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "07704B8A1AE924D20045D9BA"
-               BuildableName = "Assignment1.app"
-               BlueprintName = "Assignment1"
-               ReferencedContainer = "container:Assignment1.xcodeproj">
+               BuildableName = "Assignments.app"
+               BlueprintName = "Assignments"
+               ReferencedContainer = "container:Assignments.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "07704BA31AE924D20045D9BA"
-               BuildableName = "Assignment1Tests.xctest"
-               BlueprintName = "Assignment1Tests"
-               ReferencedContainer = "container:Assignment1.xcodeproj">
+               BuildableName = "AssignmentsTests.xctest"
+               BlueprintName = "AssignmentsTests"
+               ReferencedContainer = "container:Assignments.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -47,9 +47,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "07704BA31AE924D20045D9BA"
-               BuildableName = "Assignment1Tests.xctest"
-               BlueprintName = "Assignment1Tests"
-               ReferencedContainer = "container:Assignment1.xcodeproj">
+               BuildableName = "AssignmentsTests.xctest"
+               BlueprintName = "AssignmentsTests"
+               ReferencedContainer = "container:Assignments.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -57,9 +57,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "07704B8A1AE924D20045D9BA"
-            BuildableName = "Assignment1.app"
-            BlueprintName = "Assignment1"
-            ReferencedContainer = "container:Assignment1.xcodeproj">
+            BuildableName = "Assignments.app"
+            BlueprintName = "Assignments"
+            ReferencedContainer = "container:Assignments.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -77,9 +77,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "07704B8A1AE924D20045D9BA"
-            BuildableName = "Assignment1.app"
-            BlueprintName = "Assignment1"
-            ReferencedContainer = "container:Assignment1.xcodeproj">
+            BuildableName = "Assignments.app"
+            BlueprintName = "Assignments"
+            ReferencedContainer = "container:Assignments.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -96,9 +96,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "07704B8A1AE924D20045D9BA"
-            BuildableName = "Assignment1.app"
-            BlueprintName = "Assignment1"
-            ReferencedContainer = "container:Assignment1.xcodeproj">
+            BuildableName = "Assignments.app"
+            BlueprintName = "Assignments"
+            ReferencedContainer = "container:Assignments.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

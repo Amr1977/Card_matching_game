@@ -7,7 +7,7 @@
         <!--Playing Cards Game-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController title="Playing Cards Game" id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
+                <viewController title="Playing Cards Game" id="vXZ-lx-hvc" customClass="PlayingCardsGameViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -456,7 +456,7 @@
         <!--Set Game-->
         <scene sceneID="yvJ-dJ-HIv">
             <objects>
-                <viewController title="Set Game" id="Hps-JJ-SFr" customClass="ViewController" sceneMemberID="viewController">
+                <viewController title="Set Game" id="Hps-JJ-SFr" customClass="PlayingCardsGameViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kU3-Ue-RgH">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

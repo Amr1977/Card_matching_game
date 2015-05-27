@@ -6,13 +6,13 @@
 //  Copyright (c) 2015 Amr Lotfy. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "PlayingCardsGameViewController.h"
 #import "Deck.h"
 #import "PlayingCardDeck.h"
 #import "Playingcard.h"
 #import "CardMatchingGame.h"
 
-@interface ViewController ()
+@interface PlayingCardsGameViewController ()
 
 @property(strong, nonatomic)
     PlayingCardDeck *deck;  // this is supposed to be in the model ?
@@ -28,7 +28,7 @@
 
 @end
 
-@implementation ViewController
+@implementation PlayingCardsGameViewController
 
 // deal button
 - (IBAction)reset:(id)sender {

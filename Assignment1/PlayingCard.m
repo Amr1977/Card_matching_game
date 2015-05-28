@@ -57,7 +57,7 @@
   return [[self rankStrings] count] - 1;
 }
 
-+ (NSUInteger)matcher:(NSArray *)cardsToMatch {
+- (NSUInteger)matcher:(NSArray *)cardsToMatch {
   NSInteger score = 0;
   for (NSInteger i = 0; i < ([cardsToMatch count] - 1); i++) {
     for (NSInteger j = (i + 1); j < [cardsToMatch count]; j++) {
@@ -65,10 +65,6 @@
       PlayingCard *cardj = (PlayingCard *)cardsToMatch[j];
       if (cardi.rank == cardj.rank) {
         NSLog(@"Rank matched :) %@ %@", [cardi contents], [cardj contents]);
-
-        // In 3-card-match mode, it should be possible to get some (although a
-        // significantly lesser amount of) points for picking 3 cards of which
-        // only 2 match in some way.
         score += 4;
       }
       if ([cardi.suit caseInsensitiveCompare:cardj.suit] == NSOrderedSame) {
@@ -90,7 +86,7 @@
   [allCards addObjectsFromArray:otherCards];
   [allCards addObject:self];
 
-  score = [PlayingCard matcher:[NSArray arrayWithArray:allCards]];
+  score = [self matcher:[NSArray arrayWithArray:allCards]];
   NSLog(@"Returned score: %lu", score);
 
   return score;

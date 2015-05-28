@@ -10,6 +10,8 @@
 
 @interface TheSetGameViewController ()
 
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardsButtons;
+
 @end
 
 @implementation TheSetGameViewController

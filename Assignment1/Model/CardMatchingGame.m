@@ -59,7 +59,7 @@ static const int MATCH_BONUS = 4;
 static const int COST_TO_CHOOSE = 1;
 
 - (void)chooseCardAtIndex:(NSUInteger)index {
-  PlayingCard *card = (PlayingCard *)[self cardAtIndex:index];
+  Card *card = (PlayingCard *)[self cardAtIndex:index];
     if (!card){
         return;
     }
@@ -90,8 +90,7 @@ static const int COST_TO_CHOOSE = 1;
       // only if reached the needed number of cards to match
       if ([chosenCards count] == ([self numberOfCardsToMatch] - 1)) {
         // calculate the score
-        NSUInteger matchScore = [card match:chosenCards
-                       numberOfCardsToMatch:[self numberOfCardsToMatch]];
+        NSUInteger matchScore = [card match:chosenCards];
 
         // if we have a match
         if (matchScore) {

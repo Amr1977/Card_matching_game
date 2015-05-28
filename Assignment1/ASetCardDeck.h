@@ -7,7 +7,8 @@
 //
 
 #import "Deck.h"
+#import "ASetCard.h"
 
-@interface SetCardDeck : Deck
+@interface ASetCardDeck : Deck
 
 @end

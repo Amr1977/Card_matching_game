@@ -11,28 +11,27 @@
 @implementation ASetCardDeck
 -(instancetype) init{
     self = [super init];
-    
     if (self){
         NSLog(@"ASetCardDeck: super initialize ok, creating full deck...");
-        for (NSNumber *colorIndex in [ASetCard getValidColors]) {
-            
-        }
-        for (NSInteger shapeIndex=1;shapeIndex<=[[ASetCard getValidShapes] count];shapeIndex++) {
-            for (NSInteger colorIndex=1;colorIndex<=[[ASetCard getValidColors] count];colorIndex++) {
-                for (NSInteger shadeIndex=1;shadeIndex<=[[ASetCard getValidShades] count];shadeIndex++) {
-                    for (NSInteger countIndex=1;countIndex<=[ASetCard getMaxCount] ;countIndex++) {
-                        
-                        
+        for (NSString * color in [ASetCard getValidColors]) {
+            for (NSString * shape in [ASetCard getValidShapes]) {
+                for (NSString * shading in [ASetCard getValidShades]) {
+                    for (NSInteger count=0;count<[ASetCard getMaxShapeCount];count++) {
+                        NSDictionary * cardAttributes=[NSDictionary dictionaryWithObjectsAndKeys:
+                                                      color,@"color",
+                                                      shape,@"shape",
+                                                      shading,@"shading",
+                                                      [NSNumber numberWithInteger:count],@"count",
+                                                      nil];
+                        ASetCard *aSetCard=[[ASetCard alloc] initWithDictionary:cardAttributes];
+                        [self addCard:aSetCard];
                     }
-                    
                 }
-                
             }
-            
-            
         }
         
-    } else{
+        
+    } else {
         NSLog(@"**** Error initializing ASetCardDeck.");
     }
     

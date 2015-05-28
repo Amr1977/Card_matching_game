@@ -10,22 +10,19 @@
 
 @interface ASetCard : Card
 
+@property(nonatomic) NSString *shape;
 
+@property(nonatomic) NSString *color;
 
-@property (nonatomic) NSString *shape;
+@property(nonatomic) NSInteger count;  // number of tiles
 
-@property (nonatomic) NSString *color;
+@property(nonatomic) NSString *shading;
 
-@property (nonatomic) NSInteger count;//number of tiles
+- (instancetype)initWithDictionary:(NSDictionary *)cardAttributes;
 
-@property (nonatomic) NSString *shading;
-
-
-+(NSArray *)getValidColors;
-+(NSArray *)getValidShapes;
-+(NSArray *)getValidShades;
-+(NSInteger)getMaxShapeCount;
-
-
++ (NSArray *)getValidColors;
++ (NSArray *)getValidShapes;
++ (NSArray *)getValidShades;
++ (NSInteger)getMaxShapeCount;
 
 @end

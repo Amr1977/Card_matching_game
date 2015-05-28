@@ -59,11 +59,11 @@ static const int MATCH_BONUS = 4;
 static const int COST_TO_CHOOSE = 1;
 
 - (void)chooseCardAtIndex:(NSUInteger)index {
-  Card *card = (PlayingCard *)[self cardAtIndex:index];
-    if (!card){
+  Card *card = (Card *)[self cardAtIndex:index];
+    if (!card || (card.isMatched)){
         return;
     }
-  if (!card.isMatched) {  // if not previously matched (not out of the game)
+
     if (card.isChosen) {  // if already chosen then toggle
       card.chosen = NO;
         [self setLastAction:@""];
@@ -109,7 +109,7 @@ static const int COST_TO_CHOOSE = 1;
                                       addedScore]];
           NSLog(@"Added score: %ld", (long)addedScore);
           // turn all other cards to be matched (get them out of game)
-          for (PlayingCard *chosenCard in chosenCards) {
+          for (Card *chosenCard in chosenCards) {
             chosenCard.matched = YES;
           }
           // and turn this card out of game too
@@ -123,7 +123,7 @@ static const int COST_TO_CHOOSE = 1;
                                       [contents componentsJoinedByString:@" "],
                                       MISMATCH_PENALTY]];
           // turn back the other cards
-          for (PlayingCard *chosenCard in chosenCards) {
+          for (Card *chosenCard in chosenCards) {
             chosenCard.chosen = NO;
           }
         }
@@ -132,7 +132,7 @@ static const int COST_TO_CHOOSE = 1;
       // in all cases last choosen card will be face up
       card.chosen = YES;
     }
-  }
+  
 }
 
 @end

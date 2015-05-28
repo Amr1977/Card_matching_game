@@ -10,46 +10,129 @@
 
 @implementation ASetCard
 
-
-+(NSArray *)getValidColors{
-    //TODO: do it!
-    return nil;
++ (NSArray *)getValidColors {
+  NSArray *validColors = @[ @"red", @"green", @"purple" ];
+  return validColors;
 }
 
--(instancetype) initWithDictionary:(NSDictionary *)cardAttributes{
-    self =[super init];
-    if(self){
-        _shape = (NSString *)[cardAttributes objectForKey:@"shape" ];
-        _color = (NSString *)[cardAttributes objectForKey:@"color" ];
-        _shading = (NSString *)[cardAttributes objectForKey:@"shading"];
-        _count = (NSInteger)[cardAttributes objectForKey:@"count" ];
-    }
-    return self;
+- (instancetype)initWithDictionary:(NSDictionary *)cardAttributes {
+  self = [super init];
+  if (self) {
+    _symbol = (NSString *)[cardAttributes objectForKey:@"symbol"];
+    _color = (NSString *)[cardAttributes objectForKey:@"color"];
+    _shading = (NSString *)[cardAttributes objectForKey:@"shading"];
+    _count = (NSInteger)[cardAttributes objectForKey:@"count"];
+  }
+  return self;
 }
 
-+(NSArray *)getValidShapes{
-    NSArray * result=@[@"▲",@"●",@"■"];
-    return result;
++ (NSArray *)getValidSymbols {
+  NSArray *result = @[ @"▲", @"●", @"■" ];
+  return result;
 }
 
-+(NSArray *)getValidShades{
-    //TODO: do it!
-    return nil;
++ (NSArray *)getValidShades {
+  NSArray *validColors = @[ @"solid", @"striped", @"outlined" ];
+  return validColors;
 }
 
-+(NSInteger)getMaxShapeCount{
-    static const NSInteger maxCount=3;
-    return maxCount;
++ (NSInteger)getMaxSymbolCount {
+  static const NSInteger maxCount = 3;
+  return maxCount;
 }
 
-- (NSUInteger)match:(NSArray *)otherCards{//
-    
+- (NSUInteger)match:(NSArray *)otherCards {  //
+
+  return 0;
+}
+
++ (BOOL)allHasSameFeature:(NSString *)feature cards:(NSArray *)cards {
+  NSArray *features = @[ @"symbol", @"color", @"shading", @"count" ];
+  NSInteger index = [features indexOfObject:feature];
+  switch (index) {
+    case 0:
+      // symbol
+      return (([[cards[0] symbol] isEqualToString:[cards[1] symbol]]) &&
+              ([[cards[2] symbol] isEqualToString:[cards[1] symbol]]));
+      break;
+
+    case 1:
+      // symbol
+      return (([[cards[0] color] isEqualToString:[cards[1] color]]) &&
+              ([[cards[2] color] isEqualToString:[cards[1] color]]));
+      break;
+
+    case 2:
+      // symbol
+      return (([[cards[0] shading] isEqualToString:[cards[1] shading]]) &&
+              ([[cards[2] shading] isEqualToString:[cards[1] shading]]));
+      break;
+
+    case 3:
+      // symbol
+      return (([cards[0] count] == [cards[1] count]) &&
+              ([cards[2] count] == [cards[1] count]));
+      break;
+
+    default:
+      break;
+  }
+  return false;
+}
+
++ (BOOL)allHasDifferentFeature:(NSString *)feature cards:(NSArray *)cards {
+  NSArray *features = @[ @"symbol", @"color", @"shading", @"count" ];
+  NSInteger index = [features indexOfObject:feature];
+  switch (index) {
+    case 0:
+      // symbol
+      return ((![[cards[0] symbol] isEqualToString:[cards[1] symbol]]) &&
+              (![[cards[2] symbol] isEqualToString:[cards[1] symbol]]) &&
+              (![[cards[0] symbol] isEqualToString:[cards[2] symbol]]));
+      break;
+
+    case 1:
+      // symbol
+      return ((![[cards[0] color] isEqualToString:[cards[1] color]]) &&
+              (![[cards[2] color] isEqualToString:[cards[1] color]]) &&
+              (![[cards[2] color] isEqualToString:[cards[0] color]]));
+      break;
+
+    case 2:
+      // symbol
+      return ((![[cards[0] shading] isEqualToString:[cards[1] shading]]) &&
+              (![[cards[2] shading] isEqualToString:[cards[1] shading]]) &&
+                  (![[cards[2] shading] isEqualToString:[cards[0] shading]]));
+      break;
+
+    case 3:
+      // symbol
+      return (([cards[0] count] != [cards[1] count]) &&
+              ([cards[2] count] != [cards[1] count]) &&
+              ([cards[2] count] != [cards[0] count]));
+      break;
+
+    default:
+      break;
+  }
+  return false;
+}
+// each feature either all the same or all different
+- (NSInteger)matcher:(NSArray *)cards {
+  NSInteger score;
+  if ([cards count] != 3) {
     return 0;
+  }
+  NSArray *features = @[ @"symbol", @"color", @"shading", @"count" ];
+
+  for (NSString *feature in features) {
+    if (!(([ASetCard allHasSameFeature:feature cards:cards]) ||
+          ([ASetCard allHasDifferentFeature:feature cards:cards]))) {
+      return 0;
+    }
+  }
+
+  return score;
 }
-
-
-
 
 @end
-
-

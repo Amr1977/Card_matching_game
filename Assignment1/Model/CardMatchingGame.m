@@ -58,6 +58,12 @@ static const int MISMATCH_PENALTY = 2;
 static const int MATCH_BONUS = 4;
 static const int COST_TO_CHOOSE = 1;
 
+-(NSArray *)getGameActionsHistory{
+    if (!_gameActionsHistory) {
+        _gameActionsHistory= [[NSMutableArray alloc] init];
+    }
+    return _gameActionsHistory;
+}
 
 -(NSMutableArray *) getChosenCards:(NSArray *)cards{
     NSMutableArray *chosenCards = [[NSMutableArray alloc] init];
@@ -95,31 +101,27 @@ static const int COST_TO_CHOOSE = 1;
         return;
     }
     
-
+    GameAction * gameAction=[[GameAction alloc] init];
+    
+    [gameAction setCard:card];
+    
     if (card.isChosen) {  // if already chosen then toggle
-      card.chosen = NO;
-        [self setLastAction:@""];
+      card.chosen = NO;     //deselect
+        [gameAction setAction:@"unselect"];     //record this action
     } else {
-        [self setLastAction:[card contents]];
-      // match against other chosen cards
-      // create an array to hold other chosen cards pointers
-      NSMutableArray *chosenCards = [[NSMutableArray alloc] init];
-      NSMutableArray *contents = [[NSMutableArray alloc] init];
-      [contents addObject:[card contents]];
-      
+        [gameAction setAction:@"select"];       //record this action
+         NSMutableArray *chosenCards = [[NSMutableArray alloc] init];
         // get all chosen cards in an array
         chosenCards = [self getChosenCards:self.cards];
         [chosenCards addObject:self];
-        
-        
       
         
       NSLog(@"Other chosen cards: %lu , game mode: %lu",
-            [chosenCards count] + 1, [self numberOfCardsToMatch]);
+      [chosenCards count] + 1, [self numberOfCardsToMatch]);
       // only if reached the needed number of cards to match
       if ([chosenCards count] == ([self numberOfCardsToMatch] - 1)) {
         // calculate the score
-        NSUInteger matchScore = [card match:chosenCards];
+        NSUInteger matchScore = [card match:chosenCards];//TODO implement for set game cards
 
         // if we have a match
         if (matchScore) {
@@ -127,40 +129,37 @@ static const int COST_TO_CHOOSE = 1;
           // cards to match
           NSInteger addedScore =
               (matchScore * MATCH_BONUS) / ([self numberOfCardsToMatch] - 1);
-          if (!addedScore) {
-            addedScore += 1;
-          }
+          
           self.score += addedScore;
-          [self setLastAction:[NSString
-                                  stringWithFormat:
-                                      @"Matched %@ for %lu",
-                                      [contents componentsJoinedByString:@" "],
-                                      addedScore]];
+            [gameAction setScoreChange:addedScore];
+          
           NSLog(@"Added score: %ld", (long)addedScore);
           // turn all other cards to be matched (get them out of game)
           for (Card *chosenCard in chosenCards) {
             chosenCard.matched = YES;
           }
-          // and turn this card out of game too
-          card.matched = YES;
+            [gameAction setActionResult:@"Rewarded"];
 
         } else {
+            [gameAction setActionResult:@"Penalized"];
+            
           self.score -= MISMATCH_PENALTY;
-          [self setLastAction:[NSString
-                                  stringWithFormat:
-                                      @"Mismatched %@ for -%d",
-                                      [contents componentsJoinedByString:@" "],
-                                      MISMATCH_PENALTY]];
+          [gameAction setScoreChange:((-1)*MISMATCH_PENALTY)];
           // turn back the other cards
-          for (Card *chosenCard in chosenCards) {
-            chosenCard.chosen = NO;
-          }
+            if ([self numberOfCardsToMatch]==2){
+                for (Card *chosenCard in chosenCards) {
+                    chosenCard.chosen = NO;
+                }
+            }
         }
       }
       self.score -= COST_TO_CHOOSE;
       // in all cases last choosen card will be face up
       card.chosen = YES;
     }
+    [gameAction setScore:self.score];
+    [self setLastAction:[gameAction description]];
+    [[self gameActionsHistory] addObject:gameAction];
   
 }
 

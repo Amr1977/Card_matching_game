@@ -10,7 +10,7 @@
 
 @interface ASetCard : Card
 
-@property(nonatomic) NSString *shape;
+@property(nonatomic) NSString *symbol;
 
 @property(nonatomic) NSString *color;
 
@@ -21,8 +21,8 @@
 - (instancetype)initWithDictionary:(NSDictionary *)cardAttributes;
 
 + (NSArray *)getValidColors;
-+ (NSArray *)getValidShapes;
++ (NSArray *)getValidSymbols;
 + (NSArray *)getValidShades;
-+ (NSInteger)getMaxShapeCount;
++ (NSInteger)getMaxSymbolCount;
 
 @end

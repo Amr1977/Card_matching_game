@@ -119,7 +119,11 @@
 }
 
 - (NSString *)titleForCard:(Card *)card {
-  return card.isChosen ? card.contents : @"";
+    if (card.isChosen) {//playing cards game
+        return card.isChosen ? card.contents : @"";
+    }else{//set game
+        return card.contents;
+    }
 }
 
 - (UIImage *)backgrounfImageForCard:(Card *)card {

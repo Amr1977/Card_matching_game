@@ -29,6 +29,6 @@
 
 @property(nonatomic) NSUInteger numberOfCardsToMatch;
 
-@property (nonatomic) NSArray * gameActionsHistory;
+@property (nonatomic) NSMutableArray * gameActionsHistory;
 
 @end

@@ -13,20 +13,20 @@
   self = [super init];
   if (self) {
     NSLog(@"ASetCardDeck: super initialize ok, creating full deck...");
-    for (NSString *color in [ASetCard getValidColors]) {
-      for (NSString *shape in [ASetCard getValidShapes]) {
-        for (NSString *shading in [ASetCard getValidShades]) {
-          for (NSInteger count = 0; count < [ASetCard getMaxShapeCount];
-               count++) {
-            NSDictionary *cardAttributes = [NSDictionary
-                dictionaryWithObjectsAndKeys:color, @"color", shape, @"shape",
-                                             shading, @"shading",
-                                             [NSNumber numberWithInteger:count],
-                                             @"count", nil];
-            ASetCard *aSetCard =
+    for (NSString *colorIndex in [ASetCard getValidColors]) {
+      for (NSString *shapeIndex in [ASetCard getValidSymbols]) {
+        for (NSString *shadingIndex in [ASetCard getValidShades]) {
+            for (NSInteger countIndex = 0; countIndex < [ASetCard getMaxSymbolCount];countIndex++) {
+                NSDictionary *cardAttributes = [NSDictionary
+                                                dictionaryWithObjectsAndKeys: colorIndex, @"color",
+                                                shapeIndex, @"symbol",
+                                                shadingIndex, @"shading",
+                                                [NSNumber numberWithInteger:countIndex],
+                                                @"count", nil];
+                ASetCard *aSetCard =
                 [[ASetCard alloc] initWithDictionary:cardAttributes];
-            [self addCard:aSetCard];
-          }
+                [self addCard:aSetCard];
+            }
         }
       }
     }

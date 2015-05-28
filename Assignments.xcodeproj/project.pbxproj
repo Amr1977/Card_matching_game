@@ -197,10 +197,10 @@
 		07CB7B0B1B16D2F3007AC6C2 /* ModelLogic */ = {
 			isa = PBXGroup;
 			children = (
-				07A923CB1AEF96720005740A /* CardMatchingGame.h */,
-				07A923CC1AEF96720005740A /* CardMatchingGame.m */,
 				07CB7B0C1B173AFE007AC6C2 /* GameAction.h */,
 				07CB7B0D1B173AFE007AC6C2 /* GameAction.m */,
+				07A923CB1AEF96720005740A /* CardMatchingGame.h */,
+				07A923CC1AEF96720005740A /* CardMatchingGame.m */,
 			);
 			name = ModelLogic;
 			sourceTree = "<group>";
@@ -469,7 +469,7 @@
 				INFOPLIST_FILE = Assignment1Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = AssignmentsTests;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Assignment1.app/Assignment1";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Assignments.app/Assignments";
 			};
 			name = Debug;
 		};
@@ -484,7 +484,7 @@
 				INFOPLIST_FILE = Assignment1Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = AssignmentsTests;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Assignment1.app/Assignment1";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Assignments.app/Assignments";
 			};
 			name = Release;
 		};

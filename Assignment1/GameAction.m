@@ -10,4 +10,10 @@
 
 @implementation GameAction
 
+-(NSString *) description{
+    NSString * result;
+    result=[NSString stringWithFormat:@"Action: %@, Card: %@, Result: %@, ScoreChange: %ld, Score: %ld ",self.action,self.card,self.actionResult, self.scoreChange, self.score  ];
+    return result;
+}
+
 @end

@@ -22,6 +22,7 @@
 		07C07D191B14F3D100351558 /* ASetCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C07D181B14F3D100351558 /* ASetCard.m */; };
 		07C07D1C1B14F40F00351558 /* ASetCardDeck.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C07D1B1B14F40F00351558 /* ASetCardDeck.m */; };
 		07CB7B081B15C021007AC6C2 /* TheSetGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CB7B071B15C021007AC6C2 /* TheSetGameViewController.m */; };
+		07CB7B0E1B173AFE007AC6C2 /* GameAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CB7B0D1B173AFE007AC6C2 /* GameAction.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,8 @@
 		07C07D1B1B14F40F00351558 /* ASetCardDeck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASetCardDeck.m; sourceTree = "<group>"; };
 		07CB7B061B15C021007AC6C2 /* TheSetGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TheSetGameViewController.h; sourceTree = "<group>"; };
 		07CB7B071B15C021007AC6C2 /* TheSetGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TheSetGameViewController.m; sourceTree = "<group>"; };
+		07CB7B0C1B173AFE007AC6C2 /* GameAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameAction.h; sourceTree = "<group>"; };
+		07CB7B0D1B173AFE007AC6C2 /* GameAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameAction.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +199,8 @@
 			children = (
 				07A923CB1AEF96720005740A /* CardMatchingGame.h */,
 				07A923CC1AEF96720005740A /* CardMatchingGame.m */,
+				07CB7B0C1B173AFE007AC6C2 /* GameAction.h */,
+				07CB7B0D1B173AFE007AC6C2 /* GameAction.m */,
 			);
 			name = ModelLogic;
 			sourceTree = "<group>";
@@ -307,6 +312,7 @@
 				07704B941AE924D20045D9BA /* AppDelegate.m in Sources */,
 				07A923CD1AEF96720005740A /* CardMatchingGame.m in Sources */,
 				07C07D1C1B14F40F00351558 /* ASetCardDeck.m in Sources */,
+				07CB7B0E1B173AFE007AC6C2 /* GameAction.m in Sources */,
 				07704BC01AE936160045D9BA /* PlayingCardDeck.m in Sources */,
 				07704B911AE924D20045D9BA /* main.m in Sources */,
 				07704BB71AE935B10045D9BA /* Card.m in Sources */,

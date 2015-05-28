@@ -58,11 +58,43 @@ static const int MISMATCH_PENALTY = 2;
 static const int MATCH_BONUS = 4;
 static const int COST_TO_CHOOSE = 1;
 
+
+-(NSMutableArray *) getChosenCards:(NSArray *)cards{
+    NSMutableArray *chosenCards = [[NSMutableArray alloc] init];
+    // get all chosen cards in an array
+    for (Card *card in cards) {
+        if (card.isChosen && !card.isMatched) {
+            [chosenCards addObject:card];
+        }
+    }
+    return chosenCards;
+}
+
+
+
+
+- (NSString *) concatenateCardsContents:(NSArray *)cards{
+    NSString * result;
+    NSMutableArray *contents = [[NSMutableArray alloc] init];
+    
+    // get all chosen cards in an array
+    for (Card *card in cards) {
+        if (card.isChosen && !card.isMatched) {
+            [contents addObject:[card contents]];
+        }
+    }
+    
+    result=[contents componentsJoinedByString:@" "];
+    
+    return result;
+}
+
 - (void)chooseCardAtIndex:(NSUInteger)index {
   Card *card = (Card *)[self cardAtIndex:index];
     if (!card || (card.isMatched)){
         return;
     }
+    
 
     if (card.isChosen) {  // if already chosen then toggle
       card.chosen = NO;
@@ -74,17 +106,14 @@ static const int COST_TO_CHOOSE = 1;
       NSMutableArray *chosenCards = [[NSMutableArray alloc] init];
       NSMutableArray *contents = [[NSMutableArray alloc] init];
       [contents addObject:[card contents]];
-      // get all chosen cards in an array
-      for (Card *otherCard in self.cards) {
-        if (otherCard.isChosen && !otherCard.isMatched) {
-          [chosenCards addObject:otherCard];
-          [contents addObject:[otherCard contents]];
-          // if reached the allowed number of chosen cards
-          if ([chosenCards count] == ([self numberOfCardsToMatch] - 1)) {
-            break;
-          }
-        }
-      }
+      
+        // get all chosen cards in an array
+        chosenCards = [self getChosenCards:self.cards];
+        [chosenCards addObject:self];
+        
+        
+      
+        
       NSLog(@"Other chosen cards: %lu , game mode: %lu",
             [chosenCards count] + 1, [self numberOfCardsToMatch]);
       // only if reached the needed number of cards to match

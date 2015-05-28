@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "PlayingCardDeck.h"
 #import "PlayingCard.h"
+#import "GameAction.h"
 
 @interface CardMatchingGame : NSObject
 
@@ -27,5 +28,7 @@
 @property(nonatomic) NSString *lastAction;
 
 @property(nonatomic) NSUInteger numberOfCardsToMatch;
+
+@property (nonatomic) NSArray * gameActionsHistory;
 
 @end

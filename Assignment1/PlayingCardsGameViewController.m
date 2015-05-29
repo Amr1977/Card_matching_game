@@ -15,14 +15,13 @@
 @interface PlayingCardsGameViewController ()
 
 @property(strong, nonatomic)
-    PlayingCardDeck *deck;  // this is supposed to be in the model ?
+    Deck *deck;  // this is supposed to be in the model ?
 @property(strong, nonatomic)
-    PlayingCard *selectedPlayingCard;                 // move to model ?
+    Card *selectedPlayingCard;                 // move to model ?
 @property(strong, nonatomic) CardMatchingGame *game;  // pointer to the model
-@property(strong, nonatomic) IBOutletCollection(UIButton)
-    NSArray *cardButtons;  // buttons(cards) are put in an array
+@property(strong, nonatomic) IBOutletCollection(UIButton)  NSArray *playingCardsButtons;  // buttons(cards) are put in an array
+@property(strong, nonatomic) IBOutletCollection(UIButton)  NSArray *setGameCardsButtons;  // buttons(cards) are put in an array
 @property(weak, nonatomic) IBOutlet UILabel *scoreLabel;
-@property(weak, nonatomic) IBOutlet UISegmentedControl *gameModeSegmentControl;
 @property NSInteger numberOfCardsToMatch;
 @property(weak, nonatomic) IBOutlet UILabel *lastAction;
 
@@ -32,62 +31,52 @@
 
 // deal button
 - (IBAction)reset:(id)sender {
-  [self newGame];
+    [self newGame:2];
   [self updateUI];
-  // enable segmented control for choosing game mode
-  [[self gameModeSegmentControl] setEnabled:YES];
-  // reset all cards
+  
 }
 
-// game mode segmented control action
-- (IBAction)gameMode:(id)sender {
-  if ([[self gameModeSegmentControl] isEnabled]) {
-    if ([[self gameModeSegmentControl] selectedSegmentIndex] == 1) {
-      // three card game mode
-      // TODO: do it!
-      self.numberOfCardsToMatch = 3;
 
-    } else {
-      // two card game mode
-      // TODO: do it!
-      self.numberOfCardsToMatch = 2;
+
+- (CardMatchingGame *)newGame:(NSInteger)numberOfCardsToMatch {
+    self.numberOfCardsToMatch = numberOfCardsToMatch;
+    NSArray * buttons;
+    if (numberOfCardsToMatch==2){
+        buttons=[self playingCardsButtons];
+    }else{
+        buttons=[self setGameCardsButtons];
     }
-    [[self game] setNumberOfCardsToMatch:self.numberOfCardsToMatch];
-    NSLog(@"game mode: %ld", (long)self.numberOfCardsToMatch);
-    // [[self gameModeSegmentControl] setEnabled:NO];
-  }
-}
-
-- (CardMatchingGame *)newGame {
-  self.numberOfCardsToMatch =
-      [[self gameModeSegmentControl] selectedSegmentIndex] + 2;
 
   _game = [[CardMatchingGame alloc]
-         initWithCardCount:[self.cardButtons count]  // number of buttons(cards
+         initWithCardCount:[buttons count]  // number of buttons(cards
                                                      // cells in view)
 
                  usingDeck:[self createDeck]
-      numberOfCardsToMatch:self.numberOfCardsToMatch];  // creates full deck
+      numberOfCardsToMatch:numberOfCardsToMatch];  // creates full deck
 
-  // enable segment control
-  [[self gameModeSegmentControl] setEnabled:YES];
-  return _game;
+  
+    return _game;
 }
 
-- (CardMatchingGame *)game {
+- (CardMatchingGame *)game:(NSInteger)numberOfCardsToMatch {
   if (!_game) {
-    _game = [self newGame];
+      _game = [self newGame:numberOfCardsToMatch];
   }
   return _game;
 }
 
 // creates a full deck
-- (PlayingCardDeck *)createDeck {
-  return [[PlayingCardDeck alloc] init];
+- (Deck *)createDeck {
+    if (self.numberOfCardsToMatch==2){
+            return [[PlayingCardDeck alloc] init];
+    }else{
+        return [[ASetCardDeck alloc] init];
+    }
+  
 }
 
 // getter
-- (PlayingCardDeck *)deck {
+- (Deck *)deck {
   if (!_deck) {
     _deck = [self createDeck];
   }
@@ -96,16 +85,17 @@
 
 - (IBAction)touchCardButton:(UIButton *)sender {
   // disable changing of game mode control segment
-  [[self gameModeSegmentControl] setEnabled:NO];
+  //[[self gameModeSegmentControl] setEnabled:NO];
 
-  NSUInteger chosenButtonIndex = [self.cardButtons indexOfObject:sender];
+  NSUInteger chosenButtonIndex = [self.playingCardsButtons indexOfObject:sender];
   [self.game chooseCardAtIndex:chosenButtonIndex];
   [self updateUI];
 }
 
 - (void)updateUI {
-  for (UIButton *cardButton in self.cardButtons) {
-    NSUInteger cardButtonIndex = [self.cardButtons indexOfObject:cardButton];
+    
+  for (UIButton *cardButton in self.playingCardsButtons) {
+    NSUInteger cardButtonIndex = [self.playingCardsButtons indexOfObject:cardButton];
     Card *card = [self.game cardAtIndex:cardButtonIndex];
     [cardButton setTitle:[self titleForCard:card]
                 forState:UIControlStateNormal];
@@ -119,7 +109,7 @@
 }
 
 - (NSString *)titleForCard:(Card *)card {
-    if (card.isChosen) {//playing cards game
+    if ([self numberOfCardsToMatch]==2) {//playing cards game
         return card.isChosen ? card.contents : @"";
     }else{//set game
         return card.contents;
@@ -127,7 +117,12 @@
 }
 
 - (UIImage *)backgrounfImageForCard:(Card *)card {
-  return [UIImage imageNamed:card.isChosen ? @"cardfront" : @"cardback"];
+    if ([self numberOfCardsToMatch]==2) {//playing cards game
+        return [UIImage imageNamed:card.isChosen ? @"cardfront" : @"cardback"];
+    }else{//set game
+        return [UIImage imageNamed: @"cardfront" ];
+    }
+  
 }
 
 @end

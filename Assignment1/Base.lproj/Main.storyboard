@@ -4,6 +4,31 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <scenes>
+        <!--History-->
+        <scene sceneID="zHo-Fy-Lco">
+            <objects>
+                <viewController id="3nH-9H-C86" userLabel="History" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hn2-aj-tjF">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="5I9-SW-ahf">
+                                <rect key="frame" x="10" y="68" width="294" height="434"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Chf-Uz-Xuv"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ljy-yT-bZh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1879" y="508"/>
+        </scene>
         <!--Playing Cards Game-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
@@ -431,49 +456,55 @@
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Playing Cards Game" id="LH3-zr-gZX" userLabel="Playing Card game"/>
+                    <navigationItem key="navigationItem" id="fGs-AK-SMJ">
+                        <barButtonItem key="rightBarButtonItem" title="Item" id="0gh-8s-exG">
+                            <connections>
+                                <segue destination="3nH-9H-C86" kind="push" id="7i9-l6-WB5"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="lastAction" destination="1Yx-IM-qcA" id="xRP-Te-PmG"/>
                         <outlet property="scoreLabel" destination="AlO-k6-aF7" id="9Mu-yE-dbp"/>
-                        <outletCollection property="cardButtons" destination="ExJ-GF-aN3" id="RNQ-rN-5tP"/>
-                        <outletCollection property="cardButtons" destination="kZY-51-dRR" id="aRL-kX-yij"/>
-                        <outletCollection property="cardButtons" destination="5Tg-81-3hv" id="kgw-dc-Hi6"/>
-                        <outletCollection property="cardButtons" destination="N4P-DO-1TJ" id="llA-Pf-fb5"/>
-                        <outletCollection property="cardButtons" destination="x0v-Zt-068" id="IGH-L3-YqT"/>
-                        <outletCollection property="cardButtons" destination="tCg-fs-SNL" id="HUD-gW-PvB"/>
-                        <outletCollection property="cardButtons" destination="H0N-Id-KAU" id="0MR-75-Ifa"/>
-                        <outletCollection property="cardButtons" destination="9gN-Lw-cNa" id="evt-n6-VIB"/>
-                        <outletCollection property="cardButtons" destination="DHh-rf-8hQ" id="11n-Cu-eiH"/>
-                        <outletCollection property="cardButtons" destination="C03-89-8gO" id="yyD-vn-lln"/>
-                        <outletCollection property="cardButtons" destination="VqG-bU-0pu" id="cQf-Ml-yGp"/>
-                        <outletCollection property="cardButtons" destination="naP-ki-eaW" id="PNR-0U-8Ba"/>
-                        <outletCollection property="cardButtons" destination="KfR-7m-kGa" id="NMN-R6-da6"/>
-                        <outletCollection property="cardButtons" destination="Xrc-Hd-HHl" id="ybM-Zg-rMA"/>
-                        <outletCollection property="cardButtons" destination="UE8-VN-Cng" id="Wa5-zB-z3s"/>
-                        <outletCollection property="cardButtons" destination="ef0-zd-QfA" id="42n-EZ-aEe"/>
-                        <outletCollection property="cardButtons" destination="KfR-7m-kGa" id="Z6b-ER-GGn"/>
-                        <outletCollection property="cardButtons" destination="MTS-se-Ioq" id="26W-Im-cxS"/>
-                        <outletCollection property="cardButtons" destination="roe-lQ-ACe" id="7dr-aX-byQ"/>
-                        <outletCollection property="cardButtons" destination="N0m-Ya-1lp" id="POU-Qo-piN"/>
-                        <outletCollection property="cardButtons" destination="HFw-GH-zqr" id="qub-Bf-7Ea"/>
-                        <outletCollection property="cardButtons" destination="5iM-gI-9Pc" id="RRH-cY-k2f"/>
-                        <outletCollection property="cardButtons" destination="sRa-5Z-KPc" id="wTB-1u-OfD"/>
-                        <outletCollection property="cardButtons" destination="Bun-Fc-TOC" id="ElY-Yb-i9o"/>
-                        <outletCollection property="cardButtons" destination="v9K-hG-ENL" id="5xL-EM-ofO"/>
-                        <outletCollection property="cardButtons" destination="0o2-7f-Qb2" id="1Sq-jv-un3"/>
-                        <outletCollection property="cardButtons" destination="Q89-dc-WbZ" id="ILy-dQ-qzf"/>
-                        <outletCollection property="cardButtons" destination="qfP-wh-qTQ" id="OPL-5m-xG2"/>
-                        <outletCollection property="cardButtons" destination="ky7-HR-Q9l" id="tgx-Rv-62C"/>
+                        <outletCollection property="playingCardsButtons" destination="v9K-hG-ENL" id="czT-k2-GnZ"/>
+                        <outletCollection property="playingCardsButtons" destination="ef0-zd-QfA" id="D97-ZU-Lgg"/>
+                        <outletCollection property="playingCardsButtons" destination="HFw-GH-zqr" id="UTl-ND-wHK"/>
+                        <outletCollection property="playingCardsButtons" destination="naP-ki-eaW" id="kzK-0a-iJf"/>
+                        <outletCollection property="playingCardsButtons" destination="x0v-Zt-068" id="cYj-Hb-mhF"/>
+                        <outletCollection property="playingCardsButtons" destination="UE8-VN-Cng" id="kxX-N9-LAX"/>
+                        <outletCollection property="playingCardsButtons" destination="KfR-7m-kGa" id="4aw-Jy-E7q"/>
+                        <outletCollection property="playingCardsButtons" destination="5iM-gI-9Pc" id="u0W-wN-hGH"/>
+                        <outletCollection property="playingCardsButtons" destination="VqG-bU-0pu" id="1nm-7C-lYu"/>
+                        <outletCollection property="playingCardsButtons" destination="kZY-51-dRR" id="cga-m0-MPg"/>
+                        <outletCollection property="playingCardsButtons" destination="H0N-Id-KAU" id="PVF-D8-Kkh"/>
+                        <outletCollection property="playingCardsButtons" destination="DHh-rf-8hQ" id="QKB-JE-kek"/>
+                        <outletCollection property="playingCardsButtons" destination="Q89-dc-WbZ" id="6Su-wy-zCL"/>
+                        <outletCollection property="playingCardsButtons" destination="KfR-7m-kGa" id="Czr-Sp-FZX"/>
+                        <outletCollection property="playingCardsButtons" destination="N4P-DO-1TJ" id="8tt-52-svr"/>
+                        <outletCollection property="playingCardsButtons" destination="ExJ-GF-aN3" id="dkK-hW-7T3"/>
+                        <outletCollection property="playingCardsButtons" destination="qfP-wh-qTQ" id="pzV-eZ-zd4"/>
+                        <outletCollection property="playingCardsButtons" destination="9gN-Lw-cNa" id="b0h-of-1n2"/>
+                        <outletCollection property="playingCardsButtons" destination="sRa-5Z-KPc" id="LXn-wv-PIe"/>
+                        <outletCollection property="playingCardsButtons" destination="0o2-7f-Qb2" id="ES6-0e-kvN"/>
+                        <outletCollection property="playingCardsButtons" destination="Xrc-Hd-HHl" id="W1o-yR-OAt"/>
+                        <outletCollection property="playingCardsButtons" destination="5Tg-81-3hv" id="L2O-jL-ft1"/>
+                        <outletCollection property="playingCardsButtons" destination="roe-lQ-ACe" id="OfK-kI-k6w"/>
+                        <outletCollection property="playingCardsButtons" destination="MTS-se-Ioq" id="djO-zy-xmj"/>
+                        <outletCollection property="playingCardsButtons" destination="N0m-Ya-1lp" id="X6O-gS-6gI"/>
+                        <outletCollection property="playingCardsButtons" destination="tCg-fs-SNL" id="3pG-YZ-1Uv"/>
+                        <outletCollection property="playingCardsButtons" destination="ky7-HR-Q9l" id="FK0-95-aOs"/>
+                        <outletCollection property="playingCardsButtons" destination="C03-89-8gO" id="7Mt-WZ-ikp"/>
+                        <outletCollection property="playingCardsButtons" destination="Bun-Fc-TOC" id="flj-LG-fnB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="716" y="801"/>
+            <point key="canvasLocation" x="1248" y="801"/>
         </scene>
         <!--Set Game-->
         <scene sceneID="yvJ-dJ-HIv">
             <objects>
-                <viewController title="Set Game" id="Hps-JJ-SFr" customClass="TheSetGameViewController" sceneMemberID="viewController">
+                <viewController title="Set Game" id="Hps-JJ-SFr" customClass="PlayingCardsGameViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kU3-Ue-RgH">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -870,9 +901,14 @@
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Set Game" id="QOd-Q3-lmQ"/>
+                    <navigationItem key="navigationItem" id="Kyl-P8-hdc">
+                        <barButtonItem key="rightBarButtonItem" title="History" id="8ze-bL-YUx">
+                            <connections>
+                                <segue destination="3nH-9H-C86" kind="push" id="OCz-gG-43k"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
-                        <outlet property="lastAction" destination="B4t-R3-phz" id="BDP-rw-JtA"/>
                         <outlet property="scoreLabel" destination="0Us-Ft-NSe" id="nXA-f3-h20"/>
                         <outletCollection property="cardButtons" destination="qdX-nT-c4S" id="Gqa-7h-Vij"/>
                         <outletCollection property="cardsButtons" destination="Qsr-PQ-rby" id="Azb-uC-B7J"/>
@@ -918,7 +954,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rOx-zS-5hW" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="716" y="164"/>
+            <point key="canvasLocation" x="1248" y="164"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="z6U-Z2-5qr">
@@ -931,13 +967,51 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="viewControllers" id="zZd-eE-TEw"/>
-                        <segue destination="Hps-JJ-SFr" kind="relationship" relationship="viewControllers" id="NnI-5J-n1t"/>
+                        <segue destination="cz2-sw-Rpx" kind="relationship" relationship="viewControllers" id="zZd-eE-TEw"/>
+                        <segue destination="mwZ-DW-kuj" kind="relationship" relationship="viewControllers" id="NnI-5J-n1t"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wcL-j5-xcP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="217" y="463"/>
+        </scene>
+        <!--Set Game-->
+        <scene sceneID="D8j-ZY-HLa">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="mwZ-DW-kuj" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Set Game" id="QOd-Q3-lmQ"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="bp1-xb-2qi">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Hps-JJ-SFr" kind="relationship" relationship="rootViewController" id="d9i-Ud-BiA"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="n9w-ki-er0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="716" y="164"/>
+        </scene>
+        <!--Playing Cards Game-->
+        <scene sceneID="SoF-Z7-Lpm">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cz2-sw-Rpx" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Playing Cards Game" id="LH3-zr-gZX" userLabel="Playing Card game"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="cUU-5Y-YC8">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="W2V-gS-EKa"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZdQ-Td-j8u" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="716" y="801"/>
         </scene>
     </scenes>
     <resources>
@@ -949,4 +1023,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="7i9-l6-WB5"/>
+    </inferredMetricsTieBreakers>
 </document>

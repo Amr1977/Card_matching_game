@@ -24,5 +24,6 @@
 + (NSArray *)getValidSymbols;
 + (NSArray *)getValidShades;
 + (NSInteger)getMaxSymbolCount;
++ (NSArray *)getFeatures;
 
 @end

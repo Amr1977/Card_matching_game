@@ -10,6 +10,10 @@
 
 @implementation ASetCard
 
++(NSArray *)getFeatures{
+    return  @[ @"symbol", @"color", @"shading", @"count" ];
+}
+
 + (NSArray *)getValidColors {
   NSArray *validColors = @[ @"red", @"green", @"purple" ];
   return validColors;
@@ -47,7 +51,7 @@
 }
 
 + (BOOL)allHasSameFeature:(NSString *)feature cards:(NSArray *)cards {
-  NSArray *features = @[ @"symbol", @"color", @"shading", @"count" ];
+    NSArray *features = [ASetCard getFeatures];
   NSInteger index = [features indexOfObject:feature];
   switch (index) {
     case 0:
@@ -81,7 +85,7 @@
 }
 
 + (BOOL)allHasDifferentFeature:(NSString *)feature cards:(NSArray *)cards {
-  NSArray *features = @[ @"symbol", @"color", @"shading", @"count" ];
+  NSArray *features = [ASetCard getFeatures];
   NSInteger index = [features indexOfObject:feature];
   switch (index) {
     case 0:
@@ -118,12 +122,12 @@
   return false;
 }
 // each feature either all the same or all different
-- (NSInteger)matcher:(NSArray *)cards {
-  NSInteger score;
++ (NSInteger)matcher:(NSArray *)cards {
+  NSInteger score=4;
   if ([cards count] != 3) {
     return 0;
   }
-  NSArray *features = @[ @"symbol", @"color", @"shading", @"count" ];
+ const NSArray *features = [ASetCard getFeatures];
 
   for (NSString *feature in features) {
     if (!(([ASetCard allHasSameFeature:feature cards:cards]) ||

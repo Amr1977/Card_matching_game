@@ -20,9 +20,8 @@
     Card *selectedPlayingCard;                 // move to model ?
 @property(strong, nonatomic) CardMatchingGame *game;  // pointer to the model
 @property(strong, nonatomic) IBOutletCollection(UIButton)  NSArray *playingCardsButtons;  // buttons(cards) are put in an array
-@property(strong, nonatomic) IBOutletCollection(UIButton)  NSArray *setGameCardsButtons;  // buttons(cards) are put in an array
 @property(weak, nonatomic) IBOutlet UILabel *scoreLabel;
-@property NSInteger numberOfCardsToMatch;
+//@property NSInteger numberOfCardsToMatch;
 @property(weak, nonatomic) IBOutlet UILabel *lastAction;
 
 @end
@@ -31,48 +30,41 @@
 
 // deal button
 - (IBAction)reset:(id)sender {
-    [self newGame:2];
+    [self newGame];
   [self updateUI];
   
 }
 
 
 
-- (CardMatchingGame *)newGame:(NSInteger)numberOfCardsToMatch {
-    self.numberOfCardsToMatch = numberOfCardsToMatch;
+- (CardMatchingGame *)newGame {
+      NSLog(@"newGame: creating a new game...");
     NSArray * buttons;
-    if (numberOfCardsToMatch==2){
-        buttons=[self playingCardsButtons];
-    }else{
-        buttons=[self setGameCardsButtons];
-    }
+    buttons=[self playingCardsButtons];
+    NSLog(@"newGame: number of buttons %lul",(unsigned long)[buttons count]);
 
   _game = [[CardMatchingGame alloc]
          initWithCardCount:[buttons count]  // number of buttons(cards
                                                      // cells in view)
 
                  usingDeck:[self createDeck]
-      numberOfCardsToMatch:numberOfCardsToMatch];  // creates full deck
+      numberOfCardsToMatch:2];  // creates full deck
 
   
     return _game;
 }
 
-- (CardMatchingGame *)game:(NSInteger)numberOfCardsToMatch {
+- (CardMatchingGame *)game {
   if (!_game) {
-      _game = [self newGame:numberOfCardsToMatch];
+      NSLog(@"game: creating a new game...");
+      _game = [self newGame];
   }
   return _game;
 }
 
 // creates a full deck
 - (Deck *)createDeck {
-    if (self.numberOfCardsToMatch==2){
-            return [[PlayingCardDeck alloc] init];
-    }else{
-        return [[ASetCardDeck alloc] init];
-    }
-  
+    return [[PlayingCardDeck alloc] init];
 }
 
 // getter
@@ -88,6 +80,8 @@
   //[[self gameModeSegmentControl] setEnabled:NO];
 
   NSUInteger chosenButtonIndex = [self.playingCardsButtons indexOfObject:sender];
+    NSLog(@"chosenButtonIndex: %lu",chosenButtonIndex);
+    
   [self.game chooseCardAtIndex:chosenButtonIndex];
   [self updateUI];
 }
@@ -109,20 +103,12 @@
 }
 
 - (NSString *)titleForCard:(Card *)card {
-    if ([self numberOfCardsToMatch]==2) {//playing cards game
-        return card.isChosen ? card.contents : @"";
-    }else{//set game
-        return card.contents;
-    }
+    
+    return card.isChosen ? card.contents : @"";
 }
 
 - (UIImage *)backgrounfImageForCard:(Card *)card {
-    if ([self numberOfCardsToMatch]==2) {//playing cards game
-        return [UIImage imageNamed:card.isChosen ? @"cardfront" : @"cardback"];
-    }else{//set game
-        return [UIImage imageNamed: @"cardfront" ];
-    }
-  
+    return [UIImage imageNamed:card.isChosen ? @"cardfront" : @"cardback"];
 }
 
 @end

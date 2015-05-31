@@ -53,8 +53,10 @@
 //ok for both
 - (id)cardAtIndex:(NSUInteger)index {
   if (index < [self.cards count]) {
+      
     return self.cards[index];
   } else {
+      NSLog(@"card not found with index: %lu",index);
     return nil;
   }
 }
@@ -194,18 +196,27 @@ static const int COST_TO_CHOOSE = 1;
 }
 
 + (NSUInteger)playingCardsMatcher:(NSArray *)cardsToMatch {
+    NSLog(@"playingCardsMatcher: number of cards to check for matching is %lu",(unsigned long)[cardsToMatch count]);
+    if ([cardsToMatch count]<2){
+        
+        return 0;
+    }
     NSInteger score = 0;
     for (NSInteger i = 0; i < ([cardsToMatch count] - 1); i++) {
+        PlayingCard *cardi = (PlayingCard *)cardsToMatch[i];
         for (NSInteger j = (i + 1); j < [cardsToMatch count]; j++) {
-            PlayingCard *cardi = (PlayingCard *)cardsToMatch[i];
             PlayingCard *cardj = (PlayingCard *)cardsToMatch[j];
             if (cardi.rank == cardj.rank) {
                 NSLog(@"Rank matched :) %@ %@", [cardi contents], [cardj contents]);
                 score += 4;
+            }else{
+                NSLog(@"Rank mismatch %@ %@", [cardi contents], [cardj contents]);
             }
             if ([cardi.suit caseInsensitiveCompare:cardj.suit] == NSOrderedSame) {
                 NSLog(@"suit matched :) %@ %@", [cardi contents], [cardj contents]);
                 score += 1;
+            }else{
+                NSLog(@"suit mismatch  %@ %@", [cardi contents], [cardj contents]);
             }
         }
     }
@@ -221,9 +232,13 @@ static const int COST_TO_CHOOSE = 1;
 }
 
 - (void)chooseCardAtIndex:(NSUInteger)index {
+     NSLog(@"entered chooseCardAtIndex:");
   Card *card = (Card *)[self cardAtIndex:index];
     if (!card || (card.isMatched)){
+        NSLog(@"card not exist or matched, exiting chooseCardAtIndex");
         return;
+    }else{
+        NSLog(@"selceted card: %@",[card contents]);
     }
     
     GameAction * gameAction=[[GameAction alloc] init];
@@ -238,14 +253,14 @@ static const int COST_TO_CHOOSE = 1;
          NSMutableArray *chosenCards = [[NSMutableArray alloc] init];
         // get all chosen cards in an array
         chosenCards = [self getChosenCards:self.cards];
-        [chosenCards addObject:self];
+        [chosenCards addObject:card];
       
         
       NSLog(@"Other chosen cards: %lu , game mode: %lu",
-      [chosenCards count] + 1, [self numberOfCardsToMatch]);
+      [chosenCards count] , [self numberOfCardsToMatch]);
      
         // only if reached the needed number of cards to match
-      if ([chosenCards count] == ([self numberOfCardsToMatch] - 1)) {
+      if ([chosenCards count] == ([self numberOfCardsToMatch])) {
         // calculate the score
         NSUInteger matchScore = [self match:chosenCards];
 

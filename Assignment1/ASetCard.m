@@ -7,6 +7,7 @@
 //
 
 #import "ASetCard.h"
+@import UIKit;
 
 @implementation ASetCard
 
@@ -137,6 +138,19 @@
   }
 
   return score;
+}
+-(NSString *) contents{
+    NSMutableString * string=[NSMutableString stringWithFormat:@"%@",[self symbol]];
+    for (NSInteger i=1; i<[self count]; i++) {
+        [string appendString:[self symbol]];
+    }
+    
+    NSMutableAttributedString * attributedString= [[NSMutableAttributedString alloc] initWithString:string];
+    
+    [attributedString addAttribute: NSForegroundColorAttributeName value:[UIColor re] range:<#(NSRange)#>];
+    
+    
+    return [result copy];
 }
 
 @end

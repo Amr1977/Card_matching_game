@@ -16,7 +16,7 @@
   NSString *result = @"";
   NSArray *rankStrings = [PlayingCard rankStrings];
   result = [rankStrings[self.rank] stringByAppendingString:self.suit];
-  //NSLog(@"PlayingCard contents: %@", result);
+  NSLog(@"PlayingCard contents: %@", result);
   return result;
 }
 

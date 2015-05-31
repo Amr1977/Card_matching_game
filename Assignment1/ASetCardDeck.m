@@ -9,7 +9,8 @@
 #import "ASetCardDeck.h"
 
 @implementation ASetCardDeck
-- (instancetype)init {
+- (instancetype) init {
+    NSLog(@"ASetCardDeck: init...");
   self = [super init];
   if (self) {
     NSLog(@"ASetCardDeck: super initialize ok, creating full deck...");
@@ -26,6 +27,7 @@
                 ASetCard *aSetCard =
                 [[ASetCard alloc] initWithDictionary:cardAttributes];
                 [self addCard:aSetCard];
+                NSLog(@"Added card: %@, dictionary: %@ ",[aSetCard contents], cardAttributes );
             }
         }
       }

@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GameAction.h"
 
 @interface HistoryViewController : UIViewController
+@property (nonatomic) NSString * historyText;
+
+-(void) setHistoryEntries:(NSArray *)historyArrayEntries;
 
 @end

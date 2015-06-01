@@ -67,7 +67,7 @@ static const int COST_TO_CHOOSE = 1;
 
 
 //ok for both games
--(NSArray *)getGameActionsHistory{
+-(NSArray *)gameActionsHistory{
     if (!_gameActionsHistory) {
         _gameActionsHistory= [[NSMutableArray alloc] init];
     }

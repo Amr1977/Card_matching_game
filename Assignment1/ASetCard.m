@@ -26,7 +26,7 @@
     _symbol = (NSString *)[cardAttributes objectForKey:@"symbol"];
     _color = (NSString *)[cardAttributes objectForKey:@"color"];
     _shading = (NSString *)[cardAttributes objectForKey:@"shading"];
-    _count = (NSInteger)[cardAttributes objectForKey:@"count"];
+    _count = [(NSNumber *)[cardAttributes objectForKey:@"count"] integerValue];
   }
   return self;
 }
@@ -141,16 +141,17 @@
 }
 -(NSString *) contents{
     NSMutableString * string=[NSMutableString stringWithFormat:@"%@",[self symbol]];
-    for (NSInteger i=1; i<[self count]; i++) {
+    // ([self count]-1) because we already have 1 in the string
+    for (NSInteger i=1; i<=([self count]-1); i++) {
         [string appendString:[self symbol]];
     }
     
     NSMutableAttributedString * attributedString= [[NSMutableAttributedString alloc] initWithString:string];
     
-    [attributedString addAttribute: NSForegroundColorAttributeName value:[UIColor re] range:<#(NSRange)#>];
+    [attributedString addAttribute: NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(0,[string length]-1)];
     
-    
-    return [result copy];
+    NSLog(@"content: %@ , color: %@ , sahding: %@ , chosen: %d , matched: %d",string,  self.color, self.shading, [self isChosen], [self isMatched]);
+    return [string copy];
 }
 
 @end

@@ -11,6 +11,7 @@
 #import "PlayingCardDeck.h"
 #import "Playingcard.h"
 #import "CardMatchingGame.h"
+#import "HistoryViewController.h"
 
 @interface SetGameViewController : UIViewController
 

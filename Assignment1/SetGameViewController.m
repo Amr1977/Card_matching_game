@@ -28,28 +28,49 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [self newGame];
+    [self updateUI];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+   
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    NSLog(@"prepareForSegue launched. segue id: %@",[segue identifier] );
+    HistoryViewController * hvc=((HistoryViewController *)[segue destinationViewController]);
+    if (hvc) {
+        NSLog(@" hvc not nil");
+        
+        [hvc setHistoryEntries:self.game.gameActionsHistory];
+        
+    }else{
+        NSLog(@" hvc is nil");
+    }
+
+    
+    
+
+    
+        
+    
+    
 }
-*/
 
 - (CardMatchingGame *)newGame {
     
     NSArray * buttons;
     buttons=[self cardsButtons];
-    
+    //have a new deck
+    [self setDeck:[self createDeck]];
     
     _game = [[CardMatchingGame alloc]
              initWithCardCount:[buttons count]  // number of buttons(cards

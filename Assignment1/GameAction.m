@@ -12,7 +12,7 @@
 
 -(NSString *) description{
     NSString * result;
-    result=[NSString stringWithFormat:@"Action: %@, Card: %@, Result: %@, ScoreChange: %ld, Score: %ld ",self.action,self.card,self.actionResult, self.scoreChange, self.score  ];
+    result=[NSString stringWithFormat:@"Action: %@, Card: %@, Result: %@, ScoreChange: %ld, Score: %ld ",self.action,self.card.contents,self.actionResult, self.scoreChange, self.score  ];
     return result;
 }
 

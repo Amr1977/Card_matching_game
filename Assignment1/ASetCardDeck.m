@@ -14,6 +14,7 @@
   self = [super init];
   if (self) {
     NSLog(@"ASetCardDeck: super initialize ok, creating full deck...");
+      NSInteger index=1;
     for (NSString *color in [ASetCard getValidColors]) {
       for (NSString *symbol in [ASetCard getValidSymbols]) {
         for (NSString *shading in [ASetCard getValidShades]) {
@@ -27,7 +28,8 @@
                 ASetCard *aSetCard =
                 [[ASetCard alloc] initWithDictionary:cardAttributes];
                 [self addCard:aSetCard];
-                NSLog(@"Added card: %@, dictionary: %@ ",[aSetCard contents], cardAttributes );
+                NSLog(@"%ld - Added card: %@ , chosen: %d , matched: %d",(long)index, [aSetCard contents], [aSetCard isChosen], [aSetCard isMatched]);
+                index++;
             }
         }
       }

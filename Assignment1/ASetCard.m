@@ -10,6 +10,24 @@
 @import UIKit;
 
 @implementation ASetCard
+-(NSDictionary *) cardShading{
+    NSMutableDictionary * attributes=[NSMutableDictionary new];
+    
+    if ([self.shading isEqualToString:@"solid"]){
+        [attributes setObject:@-5 forKey:NSStrokeWidthAttributeName];
+    } else if ([self.shading isEqualToString:@"striped"]){
+        [attributes setObject:@-5 forKey:NSStrokeWidthAttributeName ];
+        [attributes setObject:@5 forKey:NSStrokeColorAttributeName];
+        [attributes setObject:@5 forKey:NSStrokeWidthAttributeName];
+
+    } else if ([self.shading isEqualToString:@"outlined"]){
+        [attributes setObject:@-5 forKey:NSStrokeWidthAttributeName];
+    }
+    
+    return [attributes copy];
+    
+    
+}
 
 +(NSArray *)getFeatures{
     return  @[ @"symbol", @"color", @"shading", @"count" ];
@@ -63,8 +81,8 @@
 
     case 1:
       // symbol
-      return (([[cards[0] color] isEqualToString:[cards[1] color]]) &&
-              ([[cards[2] color] isEqualToString:[cards[1] color]]));
+      return (([[((ASetCard *)cards[0]) color] isEqualToString:[((ASetCard *)cards[1]) color]]) &&
+              ([[((ASetCard *)cards[2]) color] isEqualToString:[((ASetCard *)cards[1]) color]]));
       break;
 
     case 2:
@@ -98,9 +116,9 @@
 
     case 1:
       // symbol
-      return ((![[cards[0] color] isEqualToString:[cards[1] color]]) &&
-              (![[cards[2] color] isEqualToString:[cards[1] color]]) &&
-              (![[cards[2] color] isEqualToString:[cards[0] color]]));
+      return ((![[((ASetCard *)cards[0]) color] isEqualToString:[((ASetCard *)cards[1]) color]]) &&
+              (![[((ASetCard *)cards[2]) color] isEqualToString:[((ASetCard *)cards[1]) color]]) &&
+              (![[((ASetCard *)cards[2]) color] isEqualToString:[((ASetCard *)cards[0]) color]]));
       break;
 
     case 2:
@@ -139,6 +157,19 @@
 
   return score;
 }
+
+-(UIColor *) cardColor{
+    if ([self.color isEqualToString:@"green"]){
+        return [UIColor greenColor];
+    }else if ([self.color isEqualToString:@"red"]){
+        return [UIColor redColor];
+    }else if ([self.color isEqualToString:@"purple"]){
+        return [UIColor purpleColor];
+    }else{
+        return [UIColor blackColor];
+    }
+}
+
 -(NSString *) contents{
     NSMutableString * string=[NSMutableString stringWithFormat:@"%@",[self symbol]];
     // ([self count]-1) because we already have 1 in the string

@@ -118,8 +118,8 @@ static const int COST_TO_CHOOSE = 1;
             
         case 1:
             // symbol
-            return (([[cards[0] color] isEqualToString:[cards[1] color]]) &&
-                    ([[cards[2] color] isEqualToString:[cards[1] color]]));
+            return (([[((ASetCard *)cards[0]) color] isEqualToString:[((ASetCard *)cards[1]) color]]) &&
+                    ([[((ASetCard *)cards[2]) color] isEqualToString:[((ASetCard *)cards[1]) color]]));
             break;
             
         case 2:
@@ -153,9 +153,9 @@ static const int COST_TO_CHOOSE = 1;
             
         case 1:
             // symbol
-            return ((![[cards[0] color] isEqualToString:[cards[1] color]]) &&
-                    (![[cards[2] color] isEqualToString:[cards[1] color]]) &&
-                    (![[cards[2] color] isEqualToString:[cards[0] color]]));
+            return ((![[((ASetCard *)cards[0]) color] isEqualToString:[((ASetCard *)cards[1]) color]]) &&
+                    (![[((ASetCard *)cards[2]) color] isEqualToString:[((ASetCard *)cards[1]) color]]) &&
+                    (![[((ASetCard *)cards[2]) color] isEqualToString:[((ASetCard *)cards[0]) color]]));
             break;
             
         case 2:

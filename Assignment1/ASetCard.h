@@ -7,6 +7,7 @@
 //
 
 #import "Card.h"
+@import UIKit;
 
 @interface ASetCard : Card
 
@@ -18,12 +19,17 @@
 
 @property(nonatomic) NSString *shading;
 
+
 - (instancetype)initWithDictionary:(NSDictionary *)cardAttributes;
+
+-(UIColor *) cardColor;
+-(NSDictionary *) cardShading;
 
 + (NSArray *)getValidColors;
 + (NSArray *)getValidSymbols;
 + (NSArray *)getValidShades;
 + (NSInteger)getMaxSymbolCount;
 + (NSArray *)getFeatures;
+
 
 @end

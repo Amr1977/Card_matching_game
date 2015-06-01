@@ -115,12 +115,26 @@
 - (void)updateUI {
     
     for (UIButton *cardButton in self.cardsButtons) {
+        
+        
         NSUInteger cardButtonIndex = [self.cardsButtons indexOfObject:cardButton];
-        Card *card = [self.game cardAtIndex:cardButtonIndex];
-        [cardButton setTitle:[self titleForCard:card]
-                    forState:UIControlStateNormal];
+        ASetCard *card = (ASetCard *)[self.game cardAtIndex:cardButtonIndex];
+        NSMutableAttributedString *attString = [[NSMutableAttributedString alloc] init];
+        NSDictionary * attributes=[NSDictionary dictionaryWithObjectsAndKeys:
+                                   [card cardColor],NSForegroundColorAttributeName,//color
+                                   //shading
+                                   nil];
+        
+        [attString appendAttributedString:[[NSAttributedString alloc] initWithString:[card contents]  attributes:attributes]];
+        
+        
+        
+        //[cardButton setTitle:[self titleForCard:card]   forState:UIControlStateNormal];
+        
+        [cardButton setAttributedTitle:attString forState:UIControlStateNormal];
         [cardButton setBackgroundImage:[self backgrounfImageForCard:card]
                               forState:UIControlStateNormal];
+        [cardButton setTitleColor:[card cardColor]  forState: UIControlStateNormal];
         cardButton.enabled = !card.isMatched;
         self.scoreLabel.text =
         [NSString stringWithFormat:@"Score: %ld", (long)self.game.score];

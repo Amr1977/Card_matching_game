@@ -28,6 +28,26 @@
 
 @implementation PlayingCardsGameViewController
 
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+    NSLog(@"prepareForSegue launched. segue id: %@",[segue identifier] );
+    HistoryViewController * hvc=((HistoryViewController *)[segue destinationViewController]);
+    if (hvc) {
+        NSLog(@" hvc not nil");
+        
+        [hvc setHistoryEntries:self.game.gameActionsHistory];
+        
+    }else{
+        NSLog(@" hvc is nil");
+    }
+    
+    
+    
+}
 // deal button
 - (IBAction)reset:(id)sender {
     [self newGame];

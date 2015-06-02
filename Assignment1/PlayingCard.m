@@ -12,6 +12,10 @@
 
 @synthesize suit = _suit;
 
+-(NSString *) description{
+    return     [self contents];
+}
+
 - (NSString *)contents {
   NSString *result = @"";
   NSArray *rankStrings = [PlayingCard rankStrings];

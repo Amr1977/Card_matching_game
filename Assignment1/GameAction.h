@@ -11,12 +11,10 @@
 
 @interface GameAction : NSObject
 
-@property (nonatomic) NSString * action;//select or deselect
-@property (nonatomic) Card * card;
-@property (nonatomic) NSString * actionResult;// reward or penalize or nothing
-@property (nonatomic) NSInteger scoreChange; 
-@property (nonatomic) NSInteger score;// new score
-
-
+@property(nonatomic) NSString* action;  // select or deselect
+@property(nonatomic) Card* card;
+@property(nonatomic) NSString* actionResult;  // reward or penalize or nothing
+@property(nonatomic) NSInteger scoreChange;
+@property(nonatomic) NSInteger score;  // new score
 
 @end

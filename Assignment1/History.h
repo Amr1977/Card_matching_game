@@ -11,7 +11,7 @@
 
 @interface History : NSObject
 
-+(NSArray *) getHistory;
-+(NSArray *) addHistoryEntry:(NSString *)historyEntry;
++ (NSArray *)getHistory;
++ (NSArray *)addHistoryEntry:(NSString *)historyEntry;
 
 @end

@@ -8,31 +8,30 @@
 
 #import "History.h"
 
-static History * history;
+static History *history;
 
 @implementation History
 
--(id)init{
-    self = [super init];
-    if (self){
-        if (!history) {
-          history= [[History alloc] init];
-        }
+- (id)init {
+  self = [super init];
+  if (self) {
+    if (!history) {
+      history = [[History alloc] init];
     }
-    return self;
+  }
+  return self;
 }
 
-+(NSArray *) getHistory{
-    //TODO: do it !
-    if (!history){
-        
-    }
-    return nil;
++ (NSArray *)getHistory {
+  // TODO: do it !
+  if (!history) {
+  }
+  return nil;
 }
 
-+(NSArray *) addHistoryEntry:(NSString *)historyEntry{
-    //TODO: do it !
-    return nil;
++ (NSArray *)addHistoryEntry:(NSString *)historyEntry {
+  // TODO: do it !
+  return nil;
 }
 
 @end

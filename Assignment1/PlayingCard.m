@@ -12,8 +12,8 @@
 
 @synthesize suit = _suit;
 
--(NSString *) description{
-    return     [self contents];
+- (NSString *)description {
+  return [self contents];
 }
 
 - (NSString *)contents {
@@ -97,4 +97,3 @@
 }
 
 @end
-

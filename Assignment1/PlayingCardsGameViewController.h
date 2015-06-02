@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "HistoryViewController.h"
 
-
 @interface PlayingCardsGameViewController : UIViewController
-
 
 @end

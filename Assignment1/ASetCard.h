@@ -19,18 +19,16 @@
 
 @property(nonatomic) NSString *shading;
 
-
 - (instancetype)initWithDictionary:(NSDictionary *)cardAttributes;
 
--(UIColor *) cardColor;
-+(NSDictionary *) cardShading:(NSString *)shadingString withColor:(NSString *)colorString;
-
+- (UIColor *)cardColor;
++ (NSDictionary *)cardShading:(NSString *)shadingString
+                    withColor:(NSString *)colorString;
 
 + (NSArray *)getValidColors;
 + (NSArray *)getValidSymbols;
 + (NSArray *)getValidShades;
 + (NSInteger)getMaxSymbolCount;
 + (NSArray *)getFeatures;
-
 
 @end

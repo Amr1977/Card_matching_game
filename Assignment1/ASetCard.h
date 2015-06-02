@@ -23,7 +23,8 @@
 - (instancetype)initWithDictionary:(NSDictionary *)cardAttributes;
 
 -(UIColor *) cardColor;
--(NSDictionary *) cardShading;
++(NSDictionary *) cardShading:(NSString *)shadingString withColor:(NSString *)colorString;
+
 
 + (NSArray *)getValidColors;
 + (NSArray *)getValidSymbols;

@@ -10,23 +10,39 @@
 @import UIKit;
 
 @implementation ASetCard
--(NSDictionary *) cardShading{
+
++(UIColor *) colorFromString:(NSString *) colorString{
+    
+    if ([colorString isEqualToString:@"green"]){
+        return [UIColor greenColor];
+    }else if ([colorString isEqualToString:@"red"]){
+        return [UIColor redColor];
+    }else if ([colorString isEqualToString:@"purple"]){
+        return [UIColor purpleColor];
+    }else{
+        return [UIColor blackColor];
+    }
+}
+
+
+
++(NSDictionary *) cardShading:(NSString *)shadingString withColor:(NSString *)colorString{
+    UIColor * color=[ASetCard colorFromString:colorString];
     NSMutableDictionary * attributes=[NSMutableDictionary new];
     
-    if ([self.shading isEqualToString:@"solid"]){
+    if ([shadingString isEqualToString:@"solid"]){//ok
         [attributes setObject:@-5 forKey:NSStrokeWidthAttributeName];
-    } else if ([self.shading isEqualToString:@"striped"]){
+    } else if ([shadingString isEqualToString:@"striped"]){
         [attributes setObject:@-5 forKey:NSStrokeWidthAttributeName ];
-        [attributes setObject:@5 forKey:NSStrokeColorAttributeName];
-        [attributes setObject:@5 forKey:NSStrokeWidthAttributeName];
+        [attributes setObject:color forKey:NSStrokeColorAttributeName];
+        [attributes setObject:[color colorWithAlphaComponent:0.1] forKey:NSForegroundColorAttributeName];
+        
+        //colorWithAlphaComponent:0.1
 
-    } else if ([self.shading isEqualToString:@"outlined"]){
-        [attributes setObject:@-5 forKey:NSStrokeWidthAttributeName];
+    } else if ([shadingString isEqualToString:@"outlined"]){//ok
+        [attributes setObject:@5 forKey:NSStrokeWidthAttributeName];
     }
-    
     return [attributes copy];
-    
-    
 }
 
 +(NSArray *)getFeatures{
@@ -159,16 +175,11 @@
 }
 
 -(UIColor *) cardColor{
-    if ([self.color isEqualToString:@"green"]){
-        return [UIColor greenColor];
-    }else if ([self.color isEqualToString:@"red"]){
-        return [UIColor redColor];
-    }else if ([self.color isEqualToString:@"purple"]){
-        return [UIColor purpleColor];
-    }else{
-        return [UIColor blackColor];
-    }
+    
+    return [ASetCard colorFromString:[self color] ];
 }
+
+
 
 -(NSString *) contents{
     NSMutableString * string=[NSMutableString stringWithFormat:@"%@",[self symbol]];

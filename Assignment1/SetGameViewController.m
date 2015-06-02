@@ -120,10 +120,11 @@
         NSUInteger cardButtonIndex = [self.cardsButtons indexOfObject:cardButton];
         ASetCard *card = (ASetCard *)[self.game cardAtIndex:cardButtonIndex];
         NSMutableAttributedString *attString = [[NSMutableAttributedString alloc] init];
-        NSDictionary * attributes=[NSDictionary dictionaryWithObjectsAndKeys:
+        NSMutableDictionary * attributes=[NSMutableDictionary dictionaryWithObjectsAndKeys:
                                    [card cardColor],NSForegroundColorAttributeName,//color
                                    //shading
                                    nil];
+        [attributes addEntriesFromDictionary: [ASetCard cardShading:[card shading] withColor:[card color]]];
         
         [attString appendAttributedString:[[NSAttributedString alloc] initWithString:[card contents]  attributes:attributes]];
         

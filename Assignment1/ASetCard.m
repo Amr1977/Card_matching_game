@@ -25,6 +25,9 @@
 }
 
 
+-(NSString *) description{
+    return [NSString stringWithFormat:@"content: %@ , color: %@ , sahding: %@",[self contents],  self.color, self.shading];
+}
 
 +(NSDictionary *) cardShading:(NSString *)shadingString withColor:(NSString *)colorString{
     UIColor * color=[ASetCard colorFromString:colorString];

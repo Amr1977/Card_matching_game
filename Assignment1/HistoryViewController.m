@@ -52,7 +52,7 @@ static NSArray * entries;
     NSLog(@"formatting history actions, number of actions: %lu",[entries count]);
     NSInteger i=0;
     for (GameAction * action in entries) {
-        [result appendString:[NSString stringWithFormat:@"%lu Action: %@ \n Card: %@\n ActionResult: %@\n Score Change: %ld\n Score: %ld \n\n\n",++i,action.action, action.card.contents,action.actionResult,(long)action.scoreChange, (long)action.score]];
+        [result appendString:[NSString stringWithFormat:@"%lu Action: %@ \n Card: %@\n ActionResult: %@\n Score Change: %ld\n Score: %ld \n\n\n",++i,action.action, action.card.description,action.actionResult,(long)action.scoreChange, (long)action.score]];
         
     }
     historyText=[result copy];

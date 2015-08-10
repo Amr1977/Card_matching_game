@@ -15,22 +15,22 @@
   if (self) {
     NSLog(@"ASetCardDeck: super initialize ok, creating full deck...");
     NSInteger index = 1;
-    for (NSString *color in [ASetCard getValidColors]) {
-      for (NSString *symbol in [ASetCard getValidSymbols]) {
-        for (NSString *shading in [ASetCard getValidShades]) {
+    for (UIColor *color in [ASetCard getValidColors]) {
+      for (NSNumber *symbol in [ASetCard getValidSymbols]) {
+        for (NSNumber *shading in [ASetCard getValidShades]) {
           for (NSInteger count = 1; count <= [ASetCard getMaxSymbolCount];
                count++) {
-            NSDictionary *cardAttributes = [NSDictionary
-                dictionaryWithObjectsAndKeys:color, @"color", symbol, @"symbol",
-                                             shading, @"shading",
-                                             [NSNumber numberWithInteger:count],
-                                             @"count", nil];
             ASetCard *aSetCard =
-                [[ASetCard alloc] initWithDictionary:cardAttributes];
+                [[ASetCard alloc] initWithSymbol:[symbol intValue]
+                                         shading:[shading intValue]
+                                           color:color
+                                           count:count];
             [self addCard:aSetCard];
-            NSLog(@"%ld - Added card: %@ , chosen: %d , matched: %d",
+            /*
+              NSLog(@"%ld - Added card: %@ , chosen: %d , matched: %d",
                   (long)index, [aSetCard contents], [aSetCard isChosen],
                   [aSetCard isMatched]);
+              */
             index++;
           }
         }

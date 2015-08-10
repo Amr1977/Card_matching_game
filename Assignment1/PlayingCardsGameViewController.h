@@ -7,8 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "HistoryViewController.h"
+#import "PlayingCardView.h"
+#import "Deck.h"
+#import "PlayingCardDeck.h"
+#import "Playingcard.h"
+#import "CardMatchingGame.h"
 
 @interface PlayingCardsGameViewController : UIViewController
+
+- (void)touchCardButton:(id)sender;
 
 @end

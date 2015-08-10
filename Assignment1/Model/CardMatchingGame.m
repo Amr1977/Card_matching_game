@@ -103,22 +103,21 @@ static const int COST_TO_CHOOSE = 1;
   switch (index) {
     case 0:
       // symbol
-      return (([[cards[0] symbol] isEqualToString:[cards[1] symbol]]) &&
-              ([[cards[2] symbol] isEqualToString:[cards[1] symbol]]));
+      return (([cards[0] symbol] == [cards[1] symbol]) &&
+              ([cards[2] symbol] == [cards[1] symbol]));
       break;
 
     case 1:
       // symbol
-      return (([[((ASetCard *)cards[0])color]
-                  isEqualToString:[((ASetCard *)cards[1])color]]) &&
-              ([[((ASetCard *)cards[2])color]
-                  isEqualToString:[((ASetCard *)cards[1])color]]));
+      return (
+          ([((ASetCard *)cards[0])color] == [((ASetCard *)cards[1])color]) &&
+          ([((ASetCard *)cards[2])color] == [((ASetCard *)cards[1])color]));
       break;
 
     case 2:
       // symbol
-      return (([[cards[0] shading] isEqualToString:[cards[1] shading]]) &&
-              ([[cards[2] shading] isEqualToString:[cards[1] shading]]));
+      return (([cards[0] shading] == [cards[1] shading]) &&
+              ([cards[2] shading] == [cards[1] shading]));
       break;
 
     case 3:
@@ -139,30 +138,28 @@ static const int COST_TO_CHOOSE = 1;
   switch (index) {
     case 0:
       // symbol
-      return ((![[cards[0] symbol] isEqualToString:[cards[1] symbol]]) &&
-              (![[cards[2] symbol] isEqualToString:[cards[1] symbol]]) &&
-              (![[cards[0] symbol] isEqualToString:[cards[2] symbol]]));
+      return (([cards[0] symbol] != [cards[1] symbol]) &&
+              ([cards[2] symbol] != [cards[1] symbol]) &&
+              ([cards[0] symbol] != [cards[2] symbol]));
       break;
 
     case 1:
-      // symbol
-      return ((![[((ASetCard *)cards[0])color]
-                   isEqualToString:[((ASetCard *)cards[1])color]]) &&
-              (![[((ASetCard *)cards[2])color]
-                   isEqualToString:[((ASetCard *)cards[1])color]]) &&
-              (![[((ASetCard *)cards[2])color]
-                   isEqualToString:[((ASetCard *)cards[0])color]]));
+      // color
+      return (
+          ([((ASetCard *)cards[0])color] != [((ASetCard *)cards[1])color]) &&
+          ([((ASetCard *)cards[2])color] != [((ASetCard *)cards[1])color]) &&
+          ([((ASetCard *)cards[2])color] != [((ASetCard *)cards[0])color]));
       break;
 
     case 2:
-      // symbol
-      return ((![[cards[0] shading] isEqualToString:[cards[1] shading]]) &&
-              (![[cards[2] shading] isEqualToString:[cards[1] shading]]) &&
-              (![[cards[2] shading] isEqualToString:[cards[0] shading]]));
+      // shading
+      return (([cards[0] shading] != [cards[1] shading]) &&
+              ([cards[2] shading] != [cards[1] shading]) &&
+              ([cards[2] shading] != [cards[0] shading]));
       break;
 
     case 3:
-      // symbol
+      // count
       return (([cards[0] count] != [cards[1] count]) &&
               ([cards[2] count] != [cards[1] count]) &&
               ([cards[2] count] != [cards[0] count]));
@@ -241,8 +238,8 @@ static const int COST_TO_CHOOSE = 1;
 
   [gameAction setCard:card];
 
-  if (card.isChosen) {  // if already chosen then toggle
-    card.chosen = NO;  // deselect
+  if (card.isChosen) {                   // if already chosen then toggle
+    card.chosen = NO;                    // deselect
     [gameAction setAction:@"unselect"];  // record this action
   } else {
     [gameAction setAction:@"select"];  // record this action

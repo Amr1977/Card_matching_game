@@ -11,8 +11,10 @@
 #import "PlayingCardDeck.h"
 #import "Playingcard.h"
 #import "CardMatchingGame.h"
-#import "HistoryViewController.h"
+#import "SetCardView.h"
 
 @interface SetGameViewController : UIViewController
+
+- (void)touchCard:(id)sender;
 
 @end

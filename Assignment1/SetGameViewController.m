@@ -14,7 +14,8 @@
 @property(strong, nonatomic) ASetCard *selectedSetCard;  // move to model ?
 @property(strong, nonatomic) CardMatchingGame *game;     // pointer to the model
 
-@property(strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardsButtons;
+@property(strong, nonatomic) IBOutletCollection(SetCardView)
+    NSArray *cardsButtons;
 @property(weak, nonatomic) IBOutlet UILabel *actionLabel;
 @property(weak, nonatomic) IBOutlet UILabel *scoreLabel;
 
@@ -29,6 +30,17 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
+  for (SetCardView *subView in self.view.subviews) {
+    if ([subView isKindOfClass:[SetCardView class]]) {
+      [subView setBackgroundColor:[UIColor whiteColor]];
+      UITapGestureRecognizer *tapgr =
+          [[UITapGestureRecognizer alloc] initWithTarget:subView
+                                                  action:@selector(handleTap)];
+      NSLog(@"Found match.");
+      subView.gameDelegate = self;
+      [subView addGestureRecognizer:tapgr];
+    }
+  }
   [self newGame];
   [self updateUI];
 }
@@ -40,7 +52,7 @@
 }
 
 #pragma mark - Navigation
-
+/*
 // In a storyboard-based application, you will often want to do a little
 // preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -58,6 +70,7 @@
     NSLog(@" hvc is nil");
   }
 }
+*/
 
 - (CardMatchingGame *)newGame {
   NSArray *buttons;
@@ -105,30 +118,14 @@
 }
 
 - (void)updateUI {
-  for (UIButton *cardButton in self.cardsButtons) {
+  for (SetCardView *cardButton in self.cardsButtons) {
     NSUInteger cardButtonIndex = [self.cardsButtons indexOfObject:cardButton];
     ASetCard *card = (ASetCard *)[self.game cardAtIndex:cardButtonIndex];
-    NSMutableAttributedString *attString =
-        [[NSMutableAttributedString alloc] init];
-    NSMutableDictionary *attributes = [NSMutableDictionary
-        dictionaryWithObjectsAndKeys:[card cardColor],
-                                     NSForegroundColorAttributeName,  // color
-                                     // shading
-                                     nil];
-    [attributes addEntriesFromDictionary:[ASetCard cardShading:[card shading]
-                                                     withColor:[card color]]];
+    cardButton.symbol = card.symbol;
+    cardButton.shading = card.shading;
+    cardButton.color = card.color;
+    cardButton.count = card.count;
 
-    [attString appendAttributedString:[[NSAttributedString alloc]
-                                          initWithString:[card contents]
-                                              attributes:attributes]];
-
-    //[cardButton setTitle:[self titleForCard:card]
-    //forState:UIControlStateNormal];
-
-    [cardButton setAttributedTitle:attString forState:UIControlStateNormal];
-    [cardButton setBackgroundImage:[self backgrounfImageForCard:card]
-                          forState:UIControlStateNormal];
-    [cardButton setTitleColor:[card cardColor] forState:UIControlStateNormal];
     cardButton.enabled = !card.isMatched;
     self.scoreLabel.text =
         [NSString stringWithFormat:@"Score: %ld", (long)self.game.score];
@@ -136,7 +133,7 @@
   }
 }
 
-- (IBAction)touchCardButton:(UIButton *)sender {
+- (void)touchCard:(id)sender {
   // disable changing of game mode control segment
   //[[self gameModeSegmentControl] setEnabled:NO];
 

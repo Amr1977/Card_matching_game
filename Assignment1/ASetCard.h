@@ -11,15 +11,24 @@
 
 @interface ASetCard : Card
 
-@property(nonatomic) NSString *symbol;
+typedef enum { SetDiamond, SetSquiggle, SetOval } SetGameSymbols;
 
-@property(nonatomic) NSString *color;
+typedef enum { SetSolid, SetStriped, SetOpen } SetGameShading;
+
+typedef enum { SetRed, SetPurple, SetGreen } SetGameColors;
+
+@property(nonatomic) SetGameSymbols symbol;
+
+@property(nonatomic) UIColor *color;
 
 @property(nonatomic) NSInteger count;  // number of tiles
 
-@property(nonatomic) NSString *shading;
+@property(nonatomic) SetGameShading shading;
 
-- (instancetype)initWithDictionary:(NSDictionary *)cardAttributes;
+- (instancetype)initWithSymbol:(SetGameSymbols)symbol
+                       shading:(SetGameShading)shading
+                         color:(UIColor *)color
+                         count:(NSInteger)count;
 
 - (UIColor *)cardColor;
 + (NSDictionary *)cardShading:(NSString *)shadingString
@@ -30,5 +39,6 @@
 + (NSArray *)getValidShades;
 + (NSInteger)getMaxSymbolCount;
 + (NSArray *)getFeatures;
++ (UIColor *)colorFromString:(NSString *)colorString;
 
 @end

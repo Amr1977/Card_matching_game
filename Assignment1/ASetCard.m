@@ -24,7 +24,7 @@
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"content: %@ , color: %@ , sahding: %@",
+  return [NSString stringWithFormat:@"content: %@ , color: %@ , sahding: %u",
                                     [self contents], self.color, self.shading];
 }
 
@@ -54,28 +54,40 @@
 }
 
 + (NSArray *)getValidColors {
-  NSArray *validColors = @[ @"red", @"green", @"purple" ];
+  NSArray *validColors =
+      @[ [UIColor redColor], [UIColor greenColor], [UIColor purpleColor] ];
   return validColors;
 }
 
-- (instancetype)initWithDictionary:(NSDictionary *)cardAttributes {
+- (instancetype)initWithSymbol:(SetGameSymbols)symbol
+                       shading:(SetGameShading)shading
+                         color:(UIColor *)color
+                         count:(NSInteger)count {
   self = [super init];
   if (self) {
-    _symbol = (NSString *)[cardAttributes objectForKey:@"symbol"];
-    _color = (NSString *)[cardAttributes objectForKey:@"color"];
-    _shading = (NSString *)[cardAttributes objectForKey:@"shading"];
-    _count = [(NSNumber *)[cardAttributes objectForKey:@"count"] integerValue];
+    _symbol = symbol;
+    _color = color;
+    _shading = shading;
+    _count = count;
   }
   return self;
 }
 
 + (NSArray *)getValidSymbols {
-  NSArray *result = @[ @"▲", @"●", @"■" ];
+  NSArray *result = @[
+    [NSNumber numberWithInt:SetDiamond],
+    [NSNumber numberWithInt:SetOval],
+    [NSNumber numberWithInt:SetSquiggle]
+  ];
   return result;
 }
 
 + (NSArray *)getValidShades {
-  NSArray *validColors = @[ @"solid", @"striped", @"outlined" ];
+  NSArray *validColors = @[
+    [NSNumber numberWithInt:SetSolid],
+    [NSNumber numberWithInt:SetStriped],
+    [NSNumber numberWithInt:SetOpen]
+  ];
   return validColors;
 }
 
@@ -95,26 +107,24 @@
   switch (index) {
     case 0:
       // symbol
-      return (([[cards[0] symbol] isEqualToString:[cards[1] symbol]]) &&
-              ([[cards[2] symbol] isEqualToString:[cards[1] symbol]]));
+      return (([cards[0] symbol] == [cards[1] symbol]) &&
+              ([cards[2] symbol] == [cards[1] symbol]));
       break;
 
     case 1:
-      // symbol
-      return (([[((ASetCard *)cards[0])color]
-                  isEqualToString:[((ASetCard *)cards[1])color]]) &&
-              ([[((ASetCard *)cards[2])color]
-                  isEqualToString:[((ASetCard *)cards[1])color]]));
+      // color
+      return (([(cards[0])color] == [(cards[1])color]) &&
+              ([(cards[2])color] == [(cards[1])color]));
       break;
 
     case 2:
-      // symbol
-      return (([[cards[0] shading] isEqualToString:[cards[1] shading]]) &&
-              ([[cards[2] shading] isEqualToString:[cards[1] shading]]));
+      // shading
+      return (([cards[0] shading] == [cards[1] shading]) &&
+              ([cards[2] shading] == [cards[1] shading]));
       break;
 
     case 3:
-      // symbol
+      // count
       return (([cards[0] count] == [cards[1] count]) &&
               ([cards[2] count] == [cards[1] count]));
       break;
@@ -131,26 +141,23 @@
   switch (index) {
     case 0:
       // symbol
-      return ((![[cards[0] symbol] isEqualToString:[cards[1] symbol]]) &&
-              (![[cards[2] symbol] isEqualToString:[cards[1] symbol]]) &&
-              (![[cards[0] symbol] isEqualToString:[cards[2] symbol]]));
+      return (([cards[0] symbol] != [cards[1] symbol]) &&
+              ([cards[2] symbol] != [cards[1] symbol]) &&
+              ([cards[0] symbol] != [cards[2] symbol]));
       break;
 
     case 1:
       // symbol
-      return ((![[((ASetCard *)cards[0])color]
-                   isEqualToString:[((ASetCard *)cards[1])color]]) &&
-              (![[((ASetCard *)cards[2])color]
-                   isEqualToString:[((ASetCard *)cards[1])color]]) &&
-              (![[((ASetCard *)cards[2])color]
-                   isEqualToString:[((ASetCard *)cards[0])color]]));
+      return (([(cards[0])color] != [(cards[1])color]) &&
+              ([(cards[2])color] != [(cards[1])color]) &&
+              ([(cards[2])color] != [(cards[0])color]));
       break;
 
     case 2:
       // symbol
-      return ((![[cards[0] shading] isEqualToString:[cards[1] shading]]) &&
-              (![[cards[2] shading] isEqualToString:[cards[1] shading]]) &&
-              (![[cards[2] shading] isEqualToString:[cards[0] shading]]));
+      return (([cards[0] shading] != [cards[1] shading]) &&
+              ([cards[2] shading] != [cards[1] shading]) &&
+              ([cards[2] shading] != [cards[0] shading]));
       break;
 
     case 3:
@@ -184,15 +191,26 @@
 }
 
 - (UIColor *)cardColor {
-  return [ASetCard colorFromString:[self color]];
+  return [self color];
+}
+
+- (NSString *)symbol2String:(SetGameSymbols)symbol {
+  switch (symbol) {
+    case SetDiamond:
+      return @"diamond";
+    case SetOval:
+      return @"oval";
+    case SetSquiggle:
+      return @"squiggle";
+  }
 }
 
 - (NSString *)contents {
-  NSMutableString *string =
-      [NSMutableString stringWithFormat:@"%@", [self symbol]];
+  NSMutableString *string = [NSMutableString
+      stringWithFormat:@"%@", [self symbol2String:[self symbol]]];
   // ([self count]-1) because we already have 1 in the string
   for (NSInteger i = 1; i <= ([self count] - 1); i++) {
-    [string appendString:[self symbol]];
+    [string appendString:[self symbol2String:[self symbol]]];
   }
 
   NSMutableAttributedString *attributedString =
@@ -202,7 +220,7 @@
                            value:[UIColor redColor]
                            range:NSMakeRange(0, [string length] - 1)];
 
-  NSLog(@"content: %@ , color: %@ , sahding: %@ , chosen: %d , matched: %d",
+  NSLog(@"content: %@ , color: %@ , sahding: %u , chosen: %d , matched: %d",
         string, self.color, self.shading, [self isChosen], [self isMatched]);
   return [string copy];
 }

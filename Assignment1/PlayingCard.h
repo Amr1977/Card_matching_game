@@ -16,4 +16,5 @@
 
 + (NSArray *)validSuits;
 + (NSInteger)maxRank;
+
 @end

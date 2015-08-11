@@ -8,6 +8,8 @@
 
 #import "SetGameViewController.h"
 
+
+
 @interface SetGameViewController ()
 @property(strong, nonatomic)
     ASetCardDeck *deck;  // this is supposed to be in the model ?
@@ -46,15 +48,13 @@
     NSLog(@"give the user more three cards...");
     //TODO: add 3 cards if possible
     for (NSInteger i=1; i<=3; i++) {
-        SetCardView * newView=[[SetCardView alloc] initWithFrame:CGRectMake(0, 0,50, 50)];
+        SetCardView * newView=[[SetCardView alloc] initWithFrame:CGRectMake(0, 0,SetCardWidth, SetCardHeight)];
         [[self view] addSubview:newView];
         [[self cardsButtons] addObject:newView];
         [[self game] addCard];
-        [self updateUI];
+
     }
-    
-    
-    
+    [self updateUI];
 }
 
 
@@ -198,8 +198,31 @@
     self.scoreLabel.text =
     [NSString stringWithFormat:@"Score: %ld", (long)self.game.score];
     self.actionLabel.text = [[self game] lastAction];
-    
+    [self allignCards];
     [[self game] logSolution];
+}
+
+
+
+-(void) allignCards{
+    // arrange each 4 cards at a row
+    CGFloat yStart=20;
+    CGFloat xStart=20;
+    //SetCardView * cardView in self.cardsButtons
+
+    for (NSInteger row=0; row < ([self.cardsButtons count] /NumberOfCardsInRow) ; row++) {
+        for (NSInteger col=0; col < NumberOfCardsInRow; col++) {
+            CGRect frame;
+            frame.origin.x=xStart+col*(SetCardWidth*(1+HGapRatio));
+            frame.origin.y=yStart+row*(SetCardHeight*(1+VGapRatio));
+            frame.size.height=SetCardHeight;
+            frame.size.width=SetCardWidth;
+            (((SetCardView *)[self.cardsButtons objectAtIndex:(row*NumberOfCardsInRow+col)])).frame=frame;
+            NSLog(@"card number [%ld] positioned at [%f,%f]",(row*NumberOfCardsInRow+col),frame.origin.x,frame.origin.y );
+            
+        }
+    }
+        NSLog(@"cards count:%ld",[self.cardsButtons count]);
 }
 
 - (void)touchCard:(id)sender {

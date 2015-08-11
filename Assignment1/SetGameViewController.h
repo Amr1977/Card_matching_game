@@ -11,6 +11,12 @@
 #import "SetCardView.h"
 
 
+#define SetCardWidth 80
+#define SetCardHeight 50
+#define HGapRatio 0.2
+#define VGapRatio 0.2
+#define NumberOfCardsInRow 4
+
 @interface SetGameViewController : UIViewController
 
 - (void)touchCard:(id)sender;

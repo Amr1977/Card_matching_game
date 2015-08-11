@@ -207,11 +207,8 @@
 
 - (NSString *)contents {
   NSMutableString *string = [NSMutableString
-      stringWithFormat:@"%@", [self symbol2String:[self symbol]]];
-  // ([self count]-1) because we already have 1 in the string
-  for (NSInteger i = 1; i <= ([self count] - 1); i++) {
-    [string appendString:[self symbol2String:[self symbol]]];
-  }
+      stringWithFormat:@"%lu %@", [self count], [self symbol2String:[self symbol]]];
+  
 
   NSMutableAttributedString *attributedString =
       [[NSMutableAttributedString alloc] initWithString:string];

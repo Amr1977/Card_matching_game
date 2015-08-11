@@ -32,7 +32,7 @@
           [[UITapGestureRecognizer alloc] initWithTarget:subView
                                                   action:@selector(handleTap)];
       NSLog(@"Found match.");
-      subView.gameDelegate = self;
+      subView.viewControllerDelegate = self;
       [subView addGestureRecognizer:tapgr];
     }
   }

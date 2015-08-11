@@ -10,10 +10,17 @@
 
 @interface CardMatchingGame ()
 @property(nonatomic, readwrite) NSInteger score;
-@property(nonatomic, strong) NSMutableArray *cards;  // make sure they are cards
+@property (nonatomic) Deck * deck;
 @end
 
 @implementation CardMatchingGame
+
+-(void)removeCard:(Card *)card{
+    [[self cards] removeObject:card];
+}
+-(void)removeCardAtIndex:(NSInteger)index{
+    [self.cards removeObjectAtIndex:index];
+}
 
 // could be used in both games
 - (instancetype)initWithCardCount:(NSUInteger)count
@@ -21,6 +28,7 @@
              numberOfCardsToMatch:(NSUInteger)numberOfCardsToMatch {
   self = [super init];  // initializer for super
   if (self) {
+      self.deck=deck;
     _numberOfCardsToMatch = numberOfCardsToMatch;
     for (int i = 0; i < count; i++) {
       Card *card = [deck drawRandomCard];
@@ -184,7 +192,7 @@ static const int COST_TO_CHOOSE = 1;
       return 0;
     }
   }
-
+    
   return score;
 }
 
@@ -220,8 +228,38 @@ static const int COST_TO_CHOOSE = 1;
   if ([self numberOfCardsToMatch] == 2) {
     return [CardMatchingGame playingCardsMatcher:chosenCards];
   } else {  // set game
-    return [CardMatchingGame setGameMatcher:chosenCards];
+      
+      NSInteger score = [CardMatchingGame setGameMatcher:chosenCards];
+      /*
+      //remove matched cards completely
+      if (score) {
+          for (Card * card in chosenCards) {
+              [self.cards removeObject:card];
+          }
+      }
+       */
+      
+      return score;
   }
+}
+
+-(void) logSolution{
+    for (NSInteger i=0 ; i<[self.cards count]-2; i++) {
+        if(!((ASetCard *)self.cards[i]).matched){
+            for (NSInteger j=i+1 ; j<[self.cards count]-1; j++) {
+                if(!((ASetCard *)self.cards[j]).matched){
+                    for (NSInteger k=j+1 ; k<[self.cards count]; k++) {
+                        NSMutableArray * cardGroup = [[NSMutableArray alloc] initWithObjects:self.cards[i],self.cards[j],self.cards[k], nil];
+                        if(!((ASetCard *)self.cards[k]).matched){
+                            if ([CardMatchingGame setGameMatcher:cardGroup]){
+                                NSLog(@"match at %ld, %ld %ld",(long)i,(long)j,(long)k);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 - (void)chooseCardAtIndex:(NSUInteger)index {
@@ -293,6 +331,18 @@ static const int COST_TO_CHOOSE = 1;
   [gameAction setScore:self.score];
   [self setLastAction:[gameAction description]];
   [[self gameActionsHistory] addObject:gameAction];
+}
+
+-(Card *)addCard{
+    Card * card= [[self deck] drawRandomCard];
+    if (card) {
+        [self.cards addObject:card];
+        NSLog(@"added a card, total cards number %ld.",[self.cards count]);
+        
+    } else{
+        NSLog(@">>>>>>>>>>>>>>>No more cards.");
+    }
+    return card;
 }
 
 @end

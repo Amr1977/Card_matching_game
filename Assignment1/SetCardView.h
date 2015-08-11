@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "ASetCard.h"
 #import "CGLine.h"
-#import "SetGameViewController.h"
+@class SetGameViewController;
+
 
 @interface SetCardView : UIView
 
@@ -18,9 +19,11 @@
 @property(nonatomic) NSInteger count;
 @property(nonatomic) SetGameShading shading;
 @property(nonatomic) BOOL enabled;
+@property(nonatomic) BOOL chosen;
 
-@property(nonatomic, weak) id gameDelegate;
+@property(nonatomic, weak) id viewControllerDelegate;
 
 - (void)handleTap;
+-(void)handlePan:(UIPanGestureRecognizer *)recognizer;
 
 @end

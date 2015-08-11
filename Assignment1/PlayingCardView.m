@@ -51,7 +51,7 @@
 }
 
 - (void)handleTap {
-  [self.gameDelegate touchCardButton:self];
+  [self.viewControllerDelegate touchCardButton:self];
 }
 
 #pragma mark - Drawing

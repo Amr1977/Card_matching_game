@@ -7,14 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Deck.h"
-#import "PlayingCardDeck.h"
-#import "Playingcard.h"
 #import "CardMatchingGame.h"
 #import "SetCardView.h"
+
 
 @interface SetGameViewController : UIViewController
 
 - (void)touchCard:(id)sender;
+- (void)removeCardSubview:(SetCardView *)card;
 
 @end

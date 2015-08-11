@@ -11,38 +11,70 @@
 @interface SetGameViewController ()
 @property(strong, nonatomic)
     ASetCardDeck *deck;  // this is supposed to be in the model ?
-@property(strong, nonatomic) ASetCard *selectedSetCard;  // move to model ?
+@property(weak, nonatomic) ASetCard *selectedSetCard;  // move to model ?
 @property(strong, nonatomic) CardMatchingGame *game;     // pointer to the model
 
-@property(strong, nonatomic) IBOutletCollection(SetCardView)
-    NSArray *cardsButtons;
+@property(strong, nonatomic) IBOutletCollection(SetCardView)    NSMutableArray *cardsButtons;
+//@property (nonatomic) NSMutableArray * cardsButtons;
+@property (nonatomic) NSMutableDictionary * cardsHash;
 @property(weak, nonatomic) IBOutlet UILabel *actionLabel;
 @property(weak, nonatomic) IBOutlet UILabel *scoreLabel;
 
 @end
 
 @implementation SetGameViewController
+
+-(NSMutableDictionary *) cardsHash{
+    if (!_cardsHash) {
+        _cardsHash =[[NSMutableDictionary alloc] init];
+    }
+    return _cardsHash;
+}
+
+/*
+-(NSMutableArray *) cardsButtons{
+    _cardsButtons=[[NSMutableArray alloc] init];
+    for (UIView * subView  in self.view.subviews) {
+        if ([subView isKindOfClass:[SetCardView class]]) {
+            [_cardsButtons addObject:subView];
+        }
+    }
+    return _cardsButtons;
+}
+*/
+- (IBAction)moreCards:(UIButton *)sender {
+    NSLog(@"give the user more three cards...");
+    //TODO: add 3 cards if possible
+    for (NSInteger i=1; i<=3; i++) {
+        SetCardView * newView=[[SetCardView alloc] initWithFrame:CGRectMake(0, 0,50, 50)];
+        [[self view] addSubview:newView];
+        [[self cardsButtons] addObject:newView];
+        [[self game] addCard];
+        [self updateUI];
+    }
+    
+    
+    
+}
+
+
 - (IBAction)deal:(id)sender {
+    while ([self.cardsButtons count]<12) {
+        [self moreCards:nil];
+    }
   [self newGame];
   [self updateUI];
+  
 }
 
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
-  for (SetCardView *subView in self.view.subviews) {
-    if ([subView isKindOfClass:[SetCardView class]]) {
-      [subView setBackgroundColor:[UIColor whiteColor]];
-      UITapGestureRecognizer *tapgr =
-          [[UITapGestureRecognizer alloc] initWithTarget:subView
-                                                  action:@selector(handleTap)];
-      NSLog(@"Found match.");
-      subView.gameDelegate = self;
-      [subView addGestureRecognizer:tapgr];
-    }
-  }
+    
+  
   [self newGame];
   [self updateUI];
+  
 }
 
 - (void)didReceiveMemoryWarning {
@@ -118,19 +150,56 @@
 }
 
 - (void)updateUI {
+    for (SetCardView *subView in self.view.subviews) {
+        if ([subView isKindOfClass:[SetCardView class]]) {
+            [subView setBackgroundColor:[UIColor whiteColor]];
+            UITapGestureRecognizer *tapgr =
+            [[UITapGestureRecognizer alloc] initWithTarget:subView
+                                                    action:@selector(handleTap)];
+            UIPanGestureRecognizer * pgr=[[UIPanGestureRecognizer alloc] initWithTarget:subView action:@selector(handlePan:)];
+            NSLog(@"Found match.");
+            subView.viewControllerDelegate = self;
+            [subView addGestureRecognizer:tapgr];
+            [subView addGestureRecognizer:pgr];
+        }
+    }
+    NSMutableArray * viewsToBeDeleted=[[NSMutableArray alloc] init];
+    NSMutableArray * cardsToBeDeleted=[[NSMutableArray alloc] init];
+
   for (SetCardView *cardButton in self.cardsButtons) {
     NSUInteger cardButtonIndex = [self.cardsButtons indexOfObject:cardButton];
     ASetCard *card = (ASetCard *)[self.game cardAtIndex:cardButtonIndex];
+      
     cardButton.symbol = card.symbol;
     cardButton.shading = card.shading;
     cardButton.color = card.color;
     cardButton.count = card.count;
+    cardButton.chosen=card.chosen;
 
-    cardButton.enabled = !card.isMatched;
-    self.scoreLabel.text =
-        [NSString stringWithFormat:@"Score: %ld", (long)self.game.score];
-    self.actionLabel.text = [[self game] lastAction];
+    cardButton.enabled = !card.isMatched;//causes a bug
+      if (card.isMatched) {
+          [viewsToBeDeleted addObject:cardButton];
+          [cardsToBeDeleted addObject:card];
+      }
   }
+    //clean removed cards from view
+    for (SetCardView * cardView in viewsToBeDeleted) {
+        [cardView removeFromSuperview];
+        [self.cardsButtons removeObject:cardView];
+        
+    }
+
+    //clean removed cards from model
+    for (ASetCard * card in cardsToBeDeleted) {
+        [self.game.cards removeObject:card];
+    }
+
+    
+    self.scoreLabel.text =
+    [NSString stringWithFormat:@"Score: %ld", (long)self.game.score];
+    self.actionLabel.text = [[self game] lastAction];
+    
+    [[self game] logSolution];
 }
 
 - (void)touchCard:(id)sender {
@@ -142,6 +211,13 @@
 
   [self.game chooseCardAtIndex:chosenButtonIndex];
   [self updateUI];
+}
+
+-(void) removeCardSubview:(SetCardView *)card{
+    NSInteger index=[self.cardsButtons indexOfObject:card];//get index in view
+    [self.game removeCardAtIndex:index];//remove from model
+    [self.cardsButtons removeObject:card]; //remove from outlet array
+    NSLog(@"remaining [%lu] cards.",[[self cardsButtons] count]);
 }
 
 @end

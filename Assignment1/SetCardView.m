@@ -7,6 +7,7 @@
 //
 
 #import "SetCardView.h"
+#import "SetGameViewController.h"
 
 @implementation SetCardView
 
@@ -29,14 +30,25 @@
 }
 
 -(void)setEnabled:(BOOL)enabled{
+    
     _enabled=enabled;
-    if (!enabled) {
-        [self removeFromSuperview];
-    }
+    [self setNeedsDisplay];
+}
+-(void)setChosen:(BOOL)chosen{
+    _chosen=chosen;
+    [self setNeedsDisplay];
 }
 
+
 - (void)handleTap {
-  [self.gameDelegate touchCard:self];
+  [self.viewControllerDelegate touchCard:self];
+}
+
+-(void)handlePan:(UIPanGestureRecognizer *)recognizer{
+    CGPoint translation = [recognizer translationInView:self];
+    recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x,
+                                         recognizer.view.center.y + translation.y);
+    [recognizer setTranslation:CGPointMake(0, 0) inView:self];
 }
 
 #define CORNER_FONT_STANDARD_HEIGHT 180.0
@@ -66,10 +78,10 @@
 
   CGContextRef context = UIGraphicsGetCurrentContext();
   CGContextSaveGState(context);
-  if (self.enabled) {
-    self.alpha = 1;
-  } else {
+  if (self.chosen) {
     self.alpha = 0.5;
+  } else {
+    self.alpha = 1;
   }
   UIBezierPath *roundedRect =
       [UIBezierPath bezierPathWithRoundedRect:self.bounds
@@ -77,7 +89,7 @@
   [roundedRect addClip];
 
   // UIBezierPath * bPath;
-  NSLog(@"color %@", [self color]);
+  //NSLog(@"color %@", [self color]);
   [self.color setStroke];
   [self.color setFill];
 
@@ -170,7 +182,7 @@
   return aPath;
 }
 
-#define Point1YLocationHeightratio 0.8
+#define Point1YLocationHeightratio 0.7
 #define Point2YLocationHeightratio 0.2
 
 //#define ControlPointToWidthRatio 0.5
@@ -285,13 +297,13 @@
   UIBezierPath *path = [[UIBezierPath alloc] init];
   path.lineWidth = 2.0;
   CGFloat ax = rect.origin.x + rect.size.width / 2;
-  CGFloat ay = rect.origin.y;
+  CGFloat ay = rect.origin.y+0.2*(rect.size.height);
 
   CGFloat bx = rect.origin.x + rect.size.width;
   CGFloat by = rect.origin.y + rect.size.height / 2;
 
   CGFloat cx = rect.origin.x + rect.size.width / 2;
-  CGFloat cy = rect.origin.y + rect.size.height;
+  CGFloat cy = rect.origin.y + rect.size.height*0.8;
 
   CGFloat dx = rect.origin.x;
   CGFloat dy = rect.origin.y + rect.size.height / 2;

@@ -14,7 +14,7 @@
 @property(nonatomic) NSInteger rank;
 @property(nonatomic) NSString *suit;
 @property(nonatomic) BOOL faceUp;
-@property(nonatomic, weak) id gameDelegate;
+@property(nonatomic, weak) id viewControllerDelegate;
 @property(nonatomic) BOOL enabled;
 
 - (void)handleTap;

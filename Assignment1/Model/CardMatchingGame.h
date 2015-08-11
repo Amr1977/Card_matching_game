@@ -23,7 +23,17 @@
 - (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(Deck *)deck;
 
 - (void)chooseCardAtIndex:(NSUInteger)index;
+
 - (Card *)cardAtIndex:(NSUInteger)index;
+
+-(void)removeCard:(Card *)card;
+
+-(void)removeCardAtIndex:(NSInteger)index;
+
+-(Card *)addCard;
+
+
+-(void) logSolution;
 
 @property(nonatomic, readonly) NSInteger score;
 
@@ -32,5 +42,10 @@
 @property(nonatomic) NSUInteger numberOfCardsToMatch;
 
 @property(nonatomic) NSMutableArray *gameActionsHistory;
+
+@property(nonatomic, strong) NSMutableArray *cards;  // make sure they are cards
+
+
+
 
 @end

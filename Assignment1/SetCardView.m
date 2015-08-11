@@ -28,6 +28,13 @@
   [self setNeedsDisplay];
 }
 
+-(void)setEnabled:(BOOL)enabled{
+    _enabled=enabled;
+    if (!enabled) {
+        [self removeFromSuperview];
+    }
+}
+
 - (void)handleTap {
   [self.gameDelegate touchCard:self];
 }

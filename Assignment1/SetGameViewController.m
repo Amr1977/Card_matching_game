@@ -8,7 +8,12 @@
 
 #import "SetGameViewController.h"
 
-
+#define SetCardWidth 80
+#define SetCardHeight 50
+#define HGapRatio 0.2
+#define VGapRatio 0.2
+#define NumberOfCardsInRow 4
+#define InitialCardNumber 12
 
 @interface SetGameViewController ()
 @property(strong, nonatomic)
@@ -16,12 +21,10 @@
 @property(weak, nonatomic) ASetCard *selectedSetCard;  // move to model ?
 @property(strong, nonatomic) CardMatchingGame *game;     // pointer to the model
 
-//@property(strong, nonatomic) IBOutletCollection(SetCardView)    NSMutableArray *cardsButtons;
 @property (nonatomic) NSMutableArray *cardsButtons;
-//@property (nonatomic) NSMutableArray * cardsButtons;
-@property (nonatomic) NSMutableDictionary * cardsHash;
-@property(weak, nonatomic) IBOutlet UILabel *actionLabel;
+
 @property(weak, nonatomic) IBOutlet UILabel *scoreLabel;
+@property (nonatomic) CGFloat reservedHeaderSpace;
 
 @end
 
@@ -43,8 +46,14 @@
 
 -(void) addCard{
     [[self game] addCard];
-    SetCardView * newView=[[SetCardView alloc] initWithFrame:CGRectMake(0, 0,SetCardWidth, SetCardHeight)];
+    SetCardView * newView=[[SetCardView alloc] initWithFrame:CGRectMake(0, 0,SetCardWidth  , SetCardHeight)];
+    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{ newView.frame=CGRectMake(0, 0, SetCardWidth, SetCardHeight);} completion:^(BOOL finish){;}];
+    
+    
+    newView.viewControllerDelegate=self;
+                           
     [[self view] addSubview:newView];
+                           
     [[self cardsButtons] addObject:newView];
 }
 
@@ -59,7 +68,19 @@
 
 
 - (IBAction)deal:(id)sender {
-    while ([self.cardsButtons count]<12) {
+    for (UIView * subview in self.cardsButtons) {
+        //delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
+        [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+           
+            subview.frame=CGRectMake(self.view.superview.bounds.size.width, 0, subview.frame.size.width, subview.frame.size.height); } completion:^(BOOL finished){ if(finished){
+                [subview removeFromSuperview];
+            }; }];
+        
+        
+    }
+    [self.cardsButtons removeAllObjects];
+    
+    while ([self.cardsButtons count]<InitialCardNumber) {
         [self moreCards:nil];
     }
   [self newGame];
@@ -83,26 +104,7 @@
   // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Navigation
-/*
-// In a storyboard-based application, you will often want to do a little
-// preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-  // Get the new view controller using [segue destinationViewController].
-  // Pass the selected object to the new view controller.
-  NSLog(@"prepareForSegue launched. segue id: %@", [segue identifier]);
-  HistoryViewController *hvc =
-      ((HistoryViewController *)[segue destinationViewController]);
-  if (hvc) {
-    NSLog(@" hvc not nil");
 
-    [hvc setHistoryEntries:self.game.gameActionsHistory];
-
-  } else {
-    NSLog(@" hvc is nil");
-  }
-}
-*/
 
 - (CardMatchingGame *)newGame {
   NSArray *buttons;
@@ -150,22 +152,11 @@
 }
 
 - (void)updateUI {
-    for (SetCardView *subView in self.view.subviews) {
-        if ([subView isKindOfClass:[SetCardView class]]) {
-            [subView setBackgroundColor:[UIColor whiteColor]];
-            UITapGestureRecognizer *tapgr =
-            [[UITapGestureRecognizer alloc] initWithTarget:subView
-                                                    action:@selector(handleTap)];
-            UIPanGestureRecognizer * pgr=[[UIPanGestureRecognizer alloc] initWithTarget:subView action:@selector(handlePan:)];
-            NSLog(@"Found match.");
-            subView.viewControllerDelegate = self;
-            [subView addGestureRecognizer:tapgr];
-            [subView addGestureRecognizer:pgr];
-        }
-    }
+    
     NSMutableArray * viewsToBeDeleted=[[NSMutableArray alloc] init];
     NSMutableArray * cardsToBeDeleted=[[NSMutableArray alloc] init];
 
+    //linking model cards to view cards
   for (SetCardView *cardButton in self.cardsButtons) {
     NSUInteger cardButtonIndex = [self.cardsButtons indexOfObject:cardButton];
     ASetCard *card = (ASetCard *)[self.game cardAtIndex:cardButtonIndex];
@@ -182,6 +173,7 @@
           [cardsToBeDeleted addObject:card];
       }
   }
+    
     //clean removed cards from view
     for (SetCardView * cardView in viewsToBeDeleted) {
         [cardView removeFromSuperview];
@@ -193,11 +185,9 @@
     for (ASetCard * card in cardsToBeDeleted) {
         [self.game.cards removeObject:card];
     }
-
     
     self.scoreLabel.text =
     [NSString stringWithFormat:@"Score: %ld", (long)self.game.score];
-    self.actionLabel.text = [[self game] lastAction];
     [self allignCards];
     [[self game] logSolution];
 }
@@ -210,18 +200,16 @@
     CGFloat xStart=20;
     //SetCardView * cardView in self.cardsButtons
 
-    for (NSInteger row=0; row < ([self.cardsButtons count] /NumberOfCardsInRow) ; row++) {
-        for (NSInteger col=0; col < NumberOfCardsInRow; col++) {
+    for (NSInteger cardNumber=0; cardNumber < ([self.cardsButtons count]) ; cardNumber++) {
             CGRect frame;
+            NSInteger row= cardNumber/NumberOfCardsInRow;
+            NSInteger col= cardNumber-row*NumberOfCardsInRow;
             frame.origin.x=xStart+col*(SetCardWidth*(1+HGapRatio));
             frame.origin.y=yStart+row*(SetCardHeight*(1+VGapRatio));
             frame.size.height=SetCardHeight;
             frame.size.width=SetCardWidth;
-            
             [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{(((SetCardView *)[self.cardsButtons objectAtIndex:(row*NumberOfCardsInRow+col)])).frame=frame; } completion:^(BOOL finished){; }];
             NSLog(@"card number [%ld] positioned at [%f,%f]",(row*NumberOfCardsInRow+col),frame.origin.x,frame.origin.y );
-            
-        }
     }
         NSLog(@"cards count:%ld",[self.cardsButtons count]);
 }

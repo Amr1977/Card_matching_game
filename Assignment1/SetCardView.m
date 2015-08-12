@@ -362,6 +362,13 @@
 - (id)initWithFrame:(CGRect)frame {
   self = [super initWithFrame:frame];
   if (self) {
+      [self setBackgroundColor:[UIColor whiteColor]];
+      UITapGestureRecognizer *tapgr =
+      [[UITapGestureRecognizer alloc] initWithTarget:self
+                                              action:@selector(handleTap)];
+      UIPanGestureRecognizer * pgr=[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+      [self addGestureRecognizer:tapgr];
+      [self addGestureRecognizer:pgr];
     // init
   }
   return self;

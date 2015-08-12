@@ -208,8 +208,8 @@
 
 -(void) allignCards{
     // arrange each 4 cards at a row
-    CGFloat yStart=20;
-    CGFloat xStart=20;
+    CGFloat yStart=self.scoreLabel.frame.origin.y+self.scoreLabel.frame.size.height+10;
+    CGFloat xStart=[self cardWidth]*HGapRatio;
     //SetCardView * cardView in self.cardsButtons
 
     for (NSInteger cardNumber=0; cardNumber < ([self.cardsButtons count]) ; cardNumber++) {

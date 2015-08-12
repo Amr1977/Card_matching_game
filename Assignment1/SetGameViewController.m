@@ -130,14 +130,39 @@
     NSInteger shift=0;
     CGFloat centerX=self.view.superview.frame.origin.x+self.view.superview.frame.size.width/2-[self cardWidth]/2;
     CGFloat centerY=self.view.superview.frame.origin.y+self.view.superview.frame.size.height/2-[self cardHeight]/2;
+    UIDynamicAnimator *animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
+    UIGravityBehavior * gravity=[[UIGravityBehavior alloc] init];
+    [animator addBehavior:gravity];
+    [gravity addItem:self.view];
+    UIAttachmentBehavior *attacher= [[UIAttachmentBehavior alloc] initWithItem:(UIView *)(self.cardsButtons[0]) attachedToAnchor:CGPointMake(centerX, centerY)];
+    [animator addBehavior:attacher];
+    
     
     for (UIView * card in [self cardsButtons]) {
         CGRect frame=CGRectMake(centerX+shift,centerY+shift, [self cardWidth], [self cardHeight]);
-        shift+=5;
+        
         [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             card.frame=frame;
         } completion:^(BOOL finish){;}];
+        
+        if (shift>5) {
+            UIAttachmentBehavior *attacher= [[UIAttachmentBehavior alloc] initWithItem:card attachedToItem:(UIView *)(self.cardsButtons[0])];
+            attacher.damping = 1.6;
+            attacher.frequency = 10;
+            [animator addBehavior:attacher];
+        }
+         
+        
+        shift+=5;
+        
     }
+    
+    
+    
+    
+
+    
+    
     //todo attach them all, remember to deattch them on tap
     
 }
@@ -242,6 +267,7 @@
 
 -(void) allignCards{
     // arrange each 4 cards at a row
+    self.gathered=false;
     CGFloat yStart=self.scoreLabel.frame.origin.y+self.scoreLabel.frame.size.height+10;
     CGFloat xStart=[self cardWidth]*HGapRatio;
     //SetCardView * cardView in self.cardsButtons
@@ -265,12 +291,16 @@
 - (void)touchCard:(id)sender {
   // disable changing of game mode control segment
   //[[self gameModeSegmentControl] setEnabled:NO];
-
-  NSUInteger chosenButtonIndex = [self.cardsButtons indexOfObject:sender];
-  NSLog(@"chosenButtonIndex: %lu", chosenButtonIndex);
-
-  [self.game chooseCardAtIndex:chosenButtonIndex];
-  [self updateUI];
+    if (!self.gathered) {
+        NSUInteger chosenButtonIndex = [self.cardsButtons indexOfObject:sender];
+        NSLog(@"chosenButtonIndex: %lu", chosenButtonIndex);
+        
+        [self.game chooseCardAtIndex:chosenButtonIndex];
+        [self updateUI];
+    }else{
+        [self allignCards];
+    }
+  
 }
 
 -(void) removeCardSubview:(SetCardView *)card{

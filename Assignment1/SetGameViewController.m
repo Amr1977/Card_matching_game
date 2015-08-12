@@ -25,6 +25,9 @@
 
 @property(weak, nonatomic) IBOutlet UILabel *scoreLabel;
 @property (nonatomic) CGFloat reservedHeaderSpace;
+@property (nonatomic) BOOL gathered;
+
+
 
 @end
 
@@ -80,6 +83,7 @@
 
 
 - (IBAction)deal:(id)sender {
+    self.gathered=false;
     for (UIView * subview in self.cardsButtons) {
         //delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
         [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
@@ -108,7 +112,37 @@
      selector:@selector(allignCards)
      name:UIDeviceOrientationDidChangeNotification
      object:nil];
+    UIPinchGestureRecognizer * pgr=[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch)];;
+    [self.view addGestureRecognizer:pgr];
 }
+
+-(void)handlePinch{
+    NSLog(@"handlePinch.");
+    if (![self gathered]) {
+       [self gatherCards];
+    }
+}
+
+-(void)gatherCards{
+    self.gathered=TRUE;
+    NSLog(@"gathering cards.");
+    
+    NSInteger shift=0;
+    CGFloat centerX=self.view.superview.frame.origin.x+self.view.superview.frame.size.width/2-[self cardWidth]/2;
+    CGFloat centerY=self.view.superview.frame.origin.y+self.view.superview.frame.size.height/2-[self cardHeight]/2;
+    
+    for (UIView * card in [self cardsButtons]) {
+        CGRect frame=CGRectMake(centerX+shift,centerY+shift, [self cardWidth], [self cardHeight]);
+        shift+=5;
+        [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            card.frame=frame;
+        } completion:^(BOOL finish){;}];
+    }
+    //todo attach them all, remember to deattch them on tap
+    
+}
+
+
 
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];

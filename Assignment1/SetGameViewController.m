@@ -16,7 +16,8 @@
 @property(weak, nonatomic) ASetCard *selectedSetCard;  // move to model ?
 @property(strong, nonatomic) CardMatchingGame *game;     // pointer to the model
 
-@property(strong, nonatomic) IBOutletCollection(SetCardView)    NSMutableArray *cardsButtons;
+//@property(strong, nonatomic) IBOutletCollection(SetCardView)    NSMutableArray *cardsButtons;
+@property (nonatomic) NSMutableArray *cardsButtons;
 //@property (nonatomic) NSMutableArray * cardsButtons;
 @property (nonatomic) NSMutableDictionary * cardsHash;
 @property(weak, nonatomic) IBOutlet UILabel *actionLabel;
@@ -26,33 +27,32 @@
 
 @implementation SetGameViewController
 
--(NSMutableDictionary *) cardsHash{
-    if (!_cardsHash) {
-        _cardsHash =[[NSMutableDictionary alloc] init];
-    }
-    return _cardsHash;
-}
 
-/*
+
+
 -(NSMutableArray *) cardsButtons{
-    _cardsButtons=[[NSMutableArray alloc] init];
-    for (UIView * subView  in self.view.subviews) {
-        if ([subView isKindOfClass:[SetCardView class]]) {
-            [_cardsButtons addObject:subView];
+    if (!_cardsButtons) {
+        _cardsButtons=[[NSMutableArray alloc] init];
+        for (NSInteger i=1; i<=InitialCardNumber; i++) {
+            [self addCard];
         }
+
     }
     return _cardsButtons;
 }
-*/
+
+-(void) addCard{
+    [[self game] addCard];
+    SetCardView * newView=[[SetCardView alloc] initWithFrame:CGRectMake(0, 0,SetCardWidth, SetCardHeight)];
+    [[self view] addSubview:newView];
+    [[self cardsButtons] addObject:newView];
+}
+
 - (IBAction)moreCards:(UIButton *)sender {
     NSLog(@"give the user more three cards...");
     //TODO: add 3 cards if possible
     for (NSInteger i=1; i<=3; i++) {
-        SetCardView * newView=[[SetCardView alloc] initWithFrame:CGRectMake(0, 0,SetCardWidth, SetCardHeight)];
-        [[self view] addSubview:newView];
-        [[self cardsButtons] addObject:newView];
-        [[self game] addCard];
-
+        [self addCard];
     }
     [self updateUI];
 }
@@ -217,7 +217,8 @@
             frame.origin.y=yStart+row*(SetCardHeight*(1+VGapRatio));
             frame.size.height=SetCardHeight;
             frame.size.width=SetCardWidth;
-            (((SetCardView *)[self.cardsButtons objectAtIndex:(row*NumberOfCardsInRow+col)])).frame=frame;
+            
+            [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{(((SetCardView *)[self.cardsButtons objectAtIndex:(row*NumberOfCardsInRow+col)])).frame=frame; } completion:^(BOOL finished){; }];
             NSLog(@"card number [%ld] positioned at [%f,%f]",(row*NumberOfCardsInRow+col),frame.origin.x,frame.origin.y );
             
         }

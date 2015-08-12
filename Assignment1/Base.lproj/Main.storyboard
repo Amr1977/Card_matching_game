@@ -133,73 +133,6 @@
                                     <action selector="deal:" destination="Hps-JJ-SFr" eventType="touchUpInside" id="awt-yq-Kgk"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Action:" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="B4t-R3-phz">
-                                <rect key="frame" x="8" y="409" width="296" height="46"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <view contentMode="scaleToFill" id="gkn-NN-Vrn" customClass="SetCardView">
-                                <rect key="frame" x="16" y="52" width="70" height="54"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <view contentMode="scaleToFill" id="4J5-HE-fx0" customClass="SetCardView">
-                                <rect key="frame" x="16" y="114" width="70" height="54"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <view contentMode="scaleToFill" id="dxE-vs-P4P" customClass="SetCardView">
-                                <rect key="frame" x="94" y="52" width="70" height="54"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <view contentMode="scaleToFill" id="IjH-Do-v4h" customClass="SetCardView">
-                                <rect key="frame" x="172" y="52" width="70" height="54"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <view contentMode="scaleToFill" id="9do-y0-kge" customClass="SetCardView">
-                                <rect key="frame" x="16" y="176" width="70" height="54"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <view contentMode="scaleToFill" id="bH9-cT-GeG" customClass="SetCardView">
-                                <rect key="frame" x="94" y="114" width="70" height="54"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <view contentMode="scaleToFill" id="1A3-0w-513" customClass="SetCardView">
-                                <rect key="frame" x="94" y="176" width="70" height="54"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <view contentMode="scaleToFill" id="7NO-3d-9eI" customClass="SetCardView">
-                                <rect key="frame" x="172" y="176" width="70" height="54"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <view contentMode="scaleToFill" id="k93-0C-xpf" customClass="SetCardView">
-                                <rect key="frame" x="16" y="238" width="70" height="54"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <view contentMode="scaleToFill" id="bii-1T-n0E" customClass="SetCardView">
-                                <rect key="frame" x="94" y="238" width="70" height="54"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <view contentMode="scaleToFill" id="aRv-tT-c7V" customClass="SetCardView">
-                                <rect key="frame" x="172" y="238" width="70" height="54"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <view contentMode="scaleToFill" id="tZT-XE-6If" customClass="SetCardView">
-                                <rect key="frame" x="172" y="114" width="70" height="54"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="6dS-TY-G6o">
                                 <rect key="frame" x="0.0" y="391" width="98" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -216,20 +149,7 @@
                     <tabBarItem key="tabBarItem" title="Set" id="er6-h9-ow0"/>
                     <navigationItem key="navigationItem" id="Kyl-P8-hdc"/>
                     <connections>
-                        <outlet property="actionLabel" destination="B4t-R3-phz" id="biM-dI-RpA"/>
                         <outlet property="scoreLabel" destination="0Us-Ft-NSe" id="oVf-rQ-pAa"/>
-                        <outletCollection property="cardsButtons" destination="gkn-NN-Vrn" collectionClass="NSMutableArray" id="BGH-JL-Oar"/>
-                        <outletCollection property="cardsButtons" destination="dxE-vs-P4P" collectionClass="NSMutableArray" id="V6B-Qt-7fK"/>
-                        <outletCollection property="cardsButtons" destination="IjH-Do-v4h" collectionClass="NSMutableArray" id="HXr-IV-rnT"/>
-                        <outletCollection property="cardsButtons" destination="4J5-HE-fx0" collectionClass="NSMutableArray" id="ZHq-qN-cRD"/>
-                        <outletCollection property="cardsButtons" destination="bH9-cT-GeG" collectionClass="NSMutableArray" id="Dev-GF-0QU"/>
-                        <outletCollection property="cardsButtons" destination="tZT-XE-6If" collectionClass="NSMutableArray" id="KhY-CJ-Cy4"/>
-                        <outletCollection property="cardsButtons" destination="9do-y0-kge" collectionClass="NSMutableArray" id="DcK-ji-u0d"/>
-                        <outletCollection property="cardsButtons" destination="1A3-0w-513" collectionClass="NSMutableArray" id="bQ3-NS-obj"/>
-                        <outletCollection property="cardsButtons" destination="7NO-3d-9eI" collectionClass="NSMutableArray" id="EnZ-Nw-qYj"/>
-                        <outletCollection property="cardsButtons" destination="k93-0C-xpf" collectionClass="NSMutableArray" id="fqX-Wg-48B"/>
-                        <outletCollection property="cardsButtons" destination="bii-1T-n0E" collectionClass="NSMutableArray" id="XrL-1f-EWJ"/>
-                        <outletCollection property="cardsButtons" destination="aRv-tT-c7V" collectionClass="NSMutableArray" id="J7J-Eg-uGp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rOx-zS-5hW" sceneMemberID="firstResponder"/>

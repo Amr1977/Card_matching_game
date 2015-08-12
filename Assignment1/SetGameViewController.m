@@ -7,12 +7,12 @@
 //
 
 #import "SetGameViewController.h"
-
-#define SetCardWidth 80.0
-#define SetCardHeight 50.0
+#define NumberOfCardsInRow 4
+#define SetCardCardToSuperViewWidthRatio 1/(NumberOfCardsInRow+1)
+#define SetCardHeightToWidthRatio 0.60
 #define HGapRatio 0.2
 #define VGapRatio 0.2
-#define NumberOfCardsInRow 4
+
 #define InitialCardNumber 12
 
 @interface SetGameViewController ()
@@ -29,6 +29,14 @@
 @end
 
 @implementation SetGameViewController
+
+-(CGFloat) cardWidth{
+    return self.view.superview.frame.size.width * SetCardCardToSuperViewWidthRatio;
+}
+
+-(CGFloat) cardHeight{
+    return [self cardWidth]*SetCardHeightToWidthRatio;
+}
 
 
 -(void) viewDidAppear:(BOOL)animated{
@@ -50,8 +58,8 @@
 
 -(void) addCard{
     [[self game] addCard];
-    SetCardView * newView=[[SetCardView alloc] initWithFrame:CGRectMake(0, 0,SetCardWidth  , SetCardHeight)];
-    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{ newView.frame=CGRectMake(0, 0, SetCardWidth, SetCardHeight);} completion:^(BOOL finish){;}];
+    SetCardView * newView=[[SetCardView alloc] initWithFrame:CGRectMake(0, 0,[self cardWidth]  , [self cardHeight])];
+    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{ newView.frame=CGRectMake(0, 0, [self cardWidth], [self cardHeight]);} completion:^(BOOL finish){;}];
     
     
     newView.viewControllerDelegate=self;
@@ -95,6 +103,11 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(allignCards)
+     name:UIDeviceOrientationDidChangeNotification
+     object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -203,15 +216,17 @@
             CGRect frame;
             NSInteger row= cardNumber/NumberOfCardsInRow;
             NSInteger col= cardNumber-row*NumberOfCardsInRow;
-            frame.origin.x=xStart+col*(SetCardWidth*(1+HGapRatio));
-            frame.origin.y=yStart+row*(SetCardHeight*(1+VGapRatio));
-            frame.size.height=SetCardHeight;
-            frame.size.width=SetCardWidth;
+            frame.origin.x=xStart+col*(([self cardWidth])*(1+HGapRatio));
+            frame.origin.y=yStart+row*([self cardHeight]*(1+VGapRatio));
+            frame.size.height=[self cardHeight];
+            frame.size.width=[self cardWidth];
             [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{(((SetCardView *)[self.cardsButtons objectAtIndex:(row*NumberOfCardsInRow+col)])).frame=frame; } completion:^(BOOL finished){; }];
             NSLog(@"card number [%ld] positioned at [%f,%f]",(row*NumberOfCardsInRow+col),frame.origin.x,frame.origin.y );
     }
         NSLog(@"cards count:%ld",[self.cardsButtons count]);
 }
+
+
 
 - (void)touchCard:(id)sender {
   // disable changing of game mode control segment

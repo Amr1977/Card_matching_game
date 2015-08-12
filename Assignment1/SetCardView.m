@@ -41,6 +41,7 @@
 
 
 - (void)handleTap {
+    [UIView transitionWithView:self duration:0.5 options:UIViewAnimationOptionTransitionFlipFromTop animations:^{; } completion: ^(BOOL finish){;}];
   [self.viewControllerDelegate touchCard:self];
 }
 

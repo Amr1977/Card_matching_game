@@ -24,6 +24,6 @@
 @property(nonatomic, weak) id viewControllerDelegate;
 
 - (void)handleTap;
--(void)handlePan:(UIPanGestureRecognizer *)recognizer;
+- (void)handlePan:(UIPanGestureRecognizer *)recognizer;
 
 @end

@@ -252,7 +252,7 @@ static const int COST_TO_CHOOSE = 1;
                         NSMutableArray * cardGroup = [[NSMutableArray alloc] initWithObjects:self.cards[i],self.cards[j],self.cards[k], nil];
                         if(!((ASetCard *)self.cards[k]).matched){
                             if ([CardMatchingGame setGameMatcher:cardGroup]){
-                                NSLog(@"match at %ld, %ld %ld",(long)i,(long)j,(long)k);
+                                NSLog(@"Cheat: match at [%ld, %ld, %ld]",(long)i,(long)j,(long)k);
                             }
                         }
                     }

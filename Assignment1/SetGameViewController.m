@@ -8,8 +8,8 @@
 
 #import "SetGameViewController.h"
 
-#define SetCardWidth 80
-#define SetCardHeight 50
+#define SetCardWidth 80.0
+#define SetCardHeight 50.0
 #define HGapRatio 0.2
 #define VGapRatio 0.2
 #define NumberOfCardsInRow 4
@@ -31,7 +31,10 @@
 @implementation SetGameViewController
 
 
-
+-(void) viewDidAppear:(BOOL)animated{
+    [self newGame];
+    [self updateUI];
+}
 
 -(NSMutableArray *) cardsButtons{
     if (!_cardsButtons) {
@@ -41,6 +44,7 @@
         }
 
     }
+    
     return _cardsButtons;
 }
 
@@ -91,11 +95,6 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
-    
-  
-  [self newGame];
-  [self updateUI];
-  
 }
 
 - (void)didReceiveMemoryWarning {

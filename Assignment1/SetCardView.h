@@ -11,7 +11,6 @@
 #import "CGLine.h"
 @class SetGameViewController;
 
-
 @interface SetCardView : UIView
 
 @property(nonatomic) SetGameSymbols symbol;
@@ -21,9 +20,8 @@
 @property(nonatomic) BOOL enabled;
 @property(nonatomic) BOOL chosen;
 
-@property(nonatomic, weak) SetGameViewController * viewControllerDelegate;
+@property(nonatomic, weak) SetGameViewController *viewControllerDelegate;
 
 - (void)handleTap;
-//- (void)handlePan:(UIPanGestureRecognizer *)recognizer;
 
 @end

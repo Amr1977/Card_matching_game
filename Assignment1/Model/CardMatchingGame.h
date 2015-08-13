@@ -26,14 +26,13 @@
 
 - (Card *)cardAtIndex:(NSUInteger)index;
 
--(void)removeCard:(Card *)card;
+- (void)removeCard:(Card *)card;
 
--(void)removeCardAtIndex:(NSInteger)index;
+- (void)removeCardAtIndex:(NSInteger)index;
 
--(Card *)addCard;
+- (Card *)addCard;
 
-
--(void) logSolution;
+- (void)logSolution;
 
 @property(nonatomic, readonly) NSInteger score;
 
@@ -44,8 +43,5 @@
 @property(nonatomic) NSMutableArray *gameActionsHistory;
 
 @property(nonatomic, strong) NSMutableArray *cards;  // make sure they are cards
-
-
-
 
 @end

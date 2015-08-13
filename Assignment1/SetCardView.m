@@ -9,9 +9,9 @@
 #import "SetCardView.h"
 #import "SetGameViewController.h"
 
-@implementation SetCardView{
-    BOOL _draggingView;
-    CGPoint _previousTouchPoint;
+@implementation SetCardView {
+  BOOL _draggingView;
+  CGPoint _previousTouchPoint;
 }
 
 - (void)setColor:(UIColor *)color {
@@ -32,61 +32,36 @@
   [self setNeedsDisplay];
 }
 
--(void)setEnabled:(BOOL)enabled{
-    
-    _enabled=enabled;
-    [self setNeedsDisplay];
+- (void)setEnabled:(BOOL)enabled {
+  _enabled = enabled;
+  [self setNeedsDisplay];
 }
--(void)setChosen:(BOOL)chosen{
-    _chosen=chosen;
-    [self setNeedsDisplay];
+- (void)setChosen:(BOOL)chosen {
+  _chosen = chosen;
+  [self setNeedsDisplay];
 }
-
 
 - (void)handleTap {
-    [UIView transitionWithView:self duration:0.5 options:UIViewAnimationOptionTransitionFlipFromTop animations:^{; } completion: ^(BOOL finish){;}];
+  [UIView transitionWithView:self
+      duration:0.5
+      options:UIViewAnimationOptionTransitionFlipFromTop
+      animations:^{
+        ;
+      }
+      completion:^(BOOL finish) {
+        ;
+      }];
   [self.viewControllerDelegate touchCard:self];
 }
 
--(void)handlePan:(UIPanGestureRecognizer *)gesture{
-  //  if (self.viewControllerDelegate.gathered) {
-    //    [self.viewControllerDelegate handlePilePan:recognizer];
-    //}else{
-        CGPoint translation = [gesture translationInView:self];
-        gesture.view.center = CGPointMake(gesture.view.center.x + translation.x,
-                                             gesture.view.center.y + translation.y);
-    if (self.viewControllerDelegate.gathered) {
-        [self.viewControllerDelegate movePile:translation sender:self];
-    }
-    
-        [gesture setTranslation:CGPointMake(0, 0) inView:self];
-    
-    //}
-    /*
-    CGPoint touchPoint = [gesture locationInView:self.superview];
-    UIView* draggedView = gesture.view;
-    
-    if (gesture.state == UIGestureRecognizerStateBegan) {
-        // 1. was the pan initiated from the upper part of the recipe?
-        _draggingView = YES;
-        _previousTouchPoint = touchPoint;
-        // Add a new attachment on the selected view;
-        self.viewControllerDelegate. attachment = [[UIAttachmentBehavior alloc] initWithItem:draggedView attachedToAnchor:touchPoint];
-        [self.viewControllerDelegate.animator addBehavior:self.attachment];
-        // Could temporarily remove gravity here
-        
-    } else if (gesture.state == UIGestureRecognizerStateChanged && _draggingView) {
-        // 2. handle dragging
-        [self.viewControllerDelegate. attachment setAnchorPoint:touchPoint];
-        
-    } else if (gesture.state == UIGestureRecognizerStateEnded && _draggingView) {
-        // 3. the gesture has ended
-        _draggingView = NO;
-        [self.viewControllerDelegate.animator removeBehavior:self.attachment];
-        // If gravity was removed, add it back here
-    }
-    */
-    
+- (void)handlePan:(UIPanGestureRecognizer *)gesture {
+  CGPoint translation = [gesture translationInView:self];
+  gesture.view.center = CGPointMake(gesture.view.center.x + translation.x,
+                                    gesture.view.center.y + translation.y);
+  if (self.viewControllerDelegate.gathered) {
+    [self.viewControllerDelegate movePile:translation sender:self];
+  }
+  [gesture setTranslation:CGPointMake(0, 0) inView:self];
 }
 
 #define CORNER_FONT_STANDARD_HEIGHT 180.0
@@ -126,8 +101,6 @@
                                  cornerRadius:[self cornerRadius]];
   [roundedRect addClip];
 
-  // UIBezierPath * bPath;
-  //NSLog(@"color %@", [self color]);
   [self.color setStroke];
   [self.color setFill];
 
@@ -160,9 +133,6 @@
       [self drawShapeAtRect:rectAtFirstThird];
       [self drawShapeAtRect:rectAtLastThird];
   }
-
-  // UIBezierPath * shape= [self drawDiamondInRect:rect];
-  //[self shadePath:shape];
 
   CGContextRestoreGState(context);
 }
@@ -222,9 +192,6 @@
 
 #define Point1YLocationHeightratio 0.7
 #define Point2YLocationHeightratio 0.2
-
-//#define ControlPointToWidthRatio 0.5
-
 #define ControlPoint1RatioToWidth 1
 #define ControlPoint2RatioToWidth 0.5
 
@@ -335,13 +302,13 @@
   UIBezierPath *path = [[UIBezierPath alloc] init];
   path.lineWidth = 2.0;
   CGFloat ax = rect.origin.x + rect.size.width / 2;
-  CGFloat ay = rect.origin.y+0.2*(rect.size.height);
+  CGFloat ay = rect.origin.y + 0.2 * (rect.size.height);
 
   CGFloat bx = rect.origin.x + rect.size.width;
   CGFloat by = rect.origin.y + rect.size.height / 2;
 
   CGFloat cx = rect.origin.x + rect.size.width / 2;
-  CGFloat cy = rect.origin.y + rect.size.height*0.8;
+  CGFloat cy = rect.origin.y + rect.size.height * 0.8;
 
   CGFloat dx = rect.origin.x;
   CGFloat dy = rect.origin.y + rect.size.height / 2;
@@ -400,13 +367,15 @@
 - (id)initWithFrame:(CGRect)frame {
   self = [super initWithFrame:frame];
   if (self) {
-      [self setBackgroundColor:[UIColor whiteColor]];
-      UITapGestureRecognizer *tapgr =
-      [[UITapGestureRecognizer alloc] initWithTarget:self
-                                              action:@selector(handleTap)];
-      UIPanGestureRecognizer * pgr=[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-      [self addGestureRecognizer:tapgr];
-      [self addGestureRecognizer:pgr];
+    [self setBackgroundColor:[UIColor whiteColor]];
+    UITapGestureRecognizer *tapgr =
+        [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                action:@selector(handleTap)];
+    UIPanGestureRecognizer *pgr =
+        [[UIPanGestureRecognizer alloc] initWithTarget:self
+                                                action:@selector(handlePan:)];
+    [self addGestureRecognizer:tapgr];
+    [self addGestureRecognizer:pgr];
     // init
   }
   return self;

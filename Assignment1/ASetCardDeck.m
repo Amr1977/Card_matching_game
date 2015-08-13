@@ -25,8 +25,8 @@
                                          shading:[shading intValue]
                                            color:color
                                            count:count];
-              aSetCard.chosen=NO;
-              aSetCard.matched=NO;
+            aSetCard.chosen = NO;
+            aSetCard.matched = NO;
             [self addCard:aSetCard];
             /*
               NSLog(@"%ld - Added card: %@ , chosen: %d , matched: %d",

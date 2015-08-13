@@ -9,7 +9,10 @@
 #import "SetCardView.h"
 #import "SetGameViewController.h"
 
-@implementation SetCardView
+@implementation SetCardView{
+    BOOL _draggingView;
+    CGPoint _previousTouchPoint;
+}
 
 - (void)setColor:(UIColor *)color {
   _color = color;
@@ -45,11 +48,45 @@
   [self.viewControllerDelegate touchCard:self];
 }
 
--(void)handlePan:(UIPanGestureRecognizer *)recognizer{
-    CGPoint translation = [recognizer translationInView:self];
-    recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x,
-                                         recognizer.view.center.y + translation.y);
-    [recognizer setTranslation:CGPointMake(0, 0) inView:self];
+-(void)handlePan:(UIPanGestureRecognizer *)gesture{
+  //  if (self.viewControllerDelegate.gathered) {
+    //    [self.viewControllerDelegate handlePilePan:recognizer];
+    //}else{
+        CGPoint translation = [gesture translationInView:self];
+        gesture.view.center = CGPointMake(gesture.view.center.x + translation.x,
+                                             gesture.view.center.y + translation.y);
+    if (self.viewControllerDelegate.gathered) {
+        [self.viewControllerDelegate movePile:translation sender:self];
+    }
+    
+        [gesture setTranslation:CGPointMake(0, 0) inView:self];
+    
+    //}
+    /*
+    CGPoint touchPoint = [gesture locationInView:self.superview];
+    UIView* draggedView = gesture.view;
+    
+    if (gesture.state == UIGestureRecognizerStateBegan) {
+        // 1. was the pan initiated from the upper part of the recipe?
+        _draggingView = YES;
+        _previousTouchPoint = touchPoint;
+        // Add a new attachment on the selected view;
+        self.viewControllerDelegate. attachment = [[UIAttachmentBehavior alloc] initWithItem:draggedView attachedToAnchor:touchPoint];
+        [self.viewControllerDelegate.animator addBehavior:self.attachment];
+        // Could temporarily remove gravity here
+        
+    } else if (gesture.state == UIGestureRecognizerStateChanged && _draggingView) {
+        // 2. handle dragging
+        [self.viewControllerDelegate. attachment setAnchorPoint:touchPoint];
+        
+    } else if (gesture.state == UIGestureRecognizerStateEnded && _draggingView) {
+        // 3. the gesture has ended
+        _draggingView = NO;
+        [self.viewControllerDelegate.animator removeBehavior:self.attachment];
+        // If gravity was removed, add it back here
+    }
+    */
+    
 }
 
 #define CORNER_FONT_STANDARD_HEIGHT 180.0

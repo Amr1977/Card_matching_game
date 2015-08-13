@@ -91,7 +91,7 @@
   [allCards addObject:self];
 
   score = [self matcher:[NSArray arrayWithArray:allCards]];
-  NSLog(@"Returned score: %lu", score);
+  NSLog(@"Returned score: %lu", (unsigned long)score);
 
   return score;
 }

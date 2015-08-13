@@ -21,9 +21,9 @@
 @property(nonatomic) BOOL enabled;
 @property(nonatomic) BOOL chosen;
 
-@property(nonatomic, weak) id viewControllerDelegate;
+@property(nonatomic, weak) SetGameViewController * viewControllerDelegate;
 
 - (void)handleTap;
-- (void)handlePan:(UIPanGestureRecognizer *)recognizer;
+//- (void)handlePan:(UIPanGestureRecognizer *)recognizer;
 
 @end

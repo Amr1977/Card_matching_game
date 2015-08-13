@@ -15,7 +15,18 @@
 
 @interface SetGameViewController : UIViewController
 
-- (void)touchCard:(id)sender;
-- (void)removeCardSubview:(SetCardView *)card;
+@property (nonatomic) BOOL gathered;
+@property (nonatomic) UIDynamicAnimator * animator;
+@property (nonatomic) UIGravityBehavior * gravity;
+@property (nonatomic) UICollisionBehavior * collision;
+@property (nonatomic) UIAttachmentBehavior * attachment;
+@property (nonatomic) UIDynamicItemBehavior* itemBehaviour;
+@property (nonatomic) NSMutableArray * viewsToBeDeleted;
+@property (nonatomic) NSMutableArray *cardsButtons;
+
+-(void)touchCard:(id)sender;
+-(void)removeCardSubview:(SetCardView *)card;
+-(void) handlePilePan:(UIPanGestureRecognizer *) recognizer;
+-(void) movePile:(CGPoint)translation sender:(UIView *)sender;
 
 @end

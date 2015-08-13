@@ -207,7 +207,7 @@
 
 - (NSString *)contents {
   NSMutableString *string = [NSMutableString
-      stringWithFormat:@"%lu %@", [self count], [self symbol2String:[self symbol]]];
+      stringWithFormat:@"%lu %@", (long)[self count], [self symbol2String:[self symbol]]];
   
 
   NSMutableAttributedString *attributedString =

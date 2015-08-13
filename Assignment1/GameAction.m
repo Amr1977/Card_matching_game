@@ -16,7 +16,7 @@
       stringWithFormat:
           @"Action: %@, Card: %@, Result: %@, ScoreChange: %ld, Score: %ld ",
           self.action, self.card.description, self.actionResult,
-          self.scoreChange, self.score];
+          (long)self.scoreChange, (long)self.score];
   return result;
 }
 

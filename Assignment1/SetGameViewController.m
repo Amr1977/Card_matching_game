@@ -15,23 +15,26 @@
 
 #define InitialCardNumber 12
 
-@interface SetGameViewController ()
+@interface SetGameViewController () <UIDynamicAnimatorDelegate>
 @property(strong, nonatomic)
     ASetCardDeck *deck;  // this is supposed to be in the model ?
 @property(weak, nonatomic) ASetCard *selectedSetCard;  // move to model ?
 @property(strong, nonatomic) CardMatchingGame *game;     // pointer to the model
 
-@property (nonatomic) NSMutableArray *cardsButtons;
+
 
 @property(weak, nonatomic) IBOutlet UILabel *scoreLabel;
 @property (nonatomic) CGFloat reservedHeaderSpace;
-@property (nonatomic) BOOL gathered;
+
+
 
 
 
 @end
 
 @implementation SetGameViewController
+
+
 
 -(CGFloat) cardWidth{
     return self.view.superview.frame.size.width * SetCardCardToSuperViewWidthRatio;
@@ -74,7 +77,6 @@
 
 - (IBAction)moreCards:(UIButton *)sender {
     NSLog(@"give the user more three cards...");
-    //TODO: add 3 cards if possible
     for (NSInteger i=1; i<=3; i++) {
         [self addCard];
     }
@@ -103,9 +105,11 @@
   [self updateUI];
   
 }
-
+#pragma mark - view did load
 - (void)viewDidLoad {
   [super viewDidLoad];
+    self.viewsToBeDeleted =[[NSMutableArray alloc] init];
+    
   // Do any additional setup after loading the view.
     [[NSNotificationCenter defaultCenter]
      addObserver:self
@@ -114,6 +118,18 @@
      object:nil];
     UIPinchGestureRecognizer * pgr=[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch)];;
     [self.view addGestureRecognizer:pgr];
+    self.animator=[[UIDynamicAnimator alloc] initWithReferenceView:self.view];
+    self.gravity= [[UIGravityBehavior alloc] init];
+    self.collision=[[UICollisionBehavior alloc] init];
+    //self.attachment=[[UIAttachmentBehavior alloc] init];
+    self.collision.translatesReferenceBoundsIntoBoundary=YES;
+    self.animator.delegate=self;
+    [self.animator addBehavior:self.gravity];
+    [self.animator addBehavior:self.collision];
+    self.itemBehaviour.elasticity=1.0;
+    [self.animator addBehavior:self.itemBehaviour];
+
+   
 }
 
 -(void)handlePinch{
@@ -123,6 +139,8 @@
     }
 }
 
+#pragma mark - gather cards
+
 -(void)gatherCards{
     self.gathered=TRUE;
     NSLog(@"gathering cards.");
@@ -130,12 +148,6 @@
     NSInteger shift=0;
     CGFloat centerX=self.view.superview.frame.origin.x+self.view.superview.frame.size.width/2-[self cardWidth]/2;
     CGFloat centerY=self.view.superview.frame.origin.y+self.view.superview.frame.size.height/2-[self cardHeight]/2;
-    UIDynamicAnimator *animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
-    UIGravityBehavior * gravity=[[UIGravityBehavior alloc] init];
-    [animator addBehavior:gravity];
-    [gravity addItem:self.view];
-    UIAttachmentBehavior *attacher= [[UIAttachmentBehavior alloc] initWithItem:(UIView *)(self.cardsButtons[0]) attachedToAnchor:CGPointMake(centerX, centerY)];
-    [animator addBehavior:attacher];
     
     
     for (UIView * card in [self cardsButtons]) {
@@ -144,18 +156,30 @@
         [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             card.frame=frame;
         } completion:^(BOOL finish){;}];
-        
-        if (shift>5) {
-            UIAttachmentBehavior *attacher= [[UIAttachmentBehavior alloc] initWithItem:card attachedToItem:(UIView *)(self.cardsButtons[0])];
-            attacher.damping = 1.6;
-            attacher.frequency = 10;
-            [animator addBehavior:attacher];
-        }
-         
-        
         shift+=5;
-        
     }
+    /*
+    BOOL flag=TRUE;
+    for (UIView * card in [self cardsButtons]) {
+        UIAttachmentBehavior *attacher;
+        if (flag) {
+            flag=FALSE;
+            //attach first card to its upper left corner
+            attacher= [[UIAttachmentBehavior alloc] initWithItem:card attachedToAnchor:card.frame.origin];
+            
+            
+        }else{
+            attacher = [[UIAttachmentBehavior alloc] initWithItem:card attachedToItem:(UIView *)(self.cardsButtons[0])];
+        }
+        attacher.damping = 2.0;
+        attacher.frequency = 20;
+        //[self.itemBehaviour addItem:card];
+        //[self.animator addBehavior:attacher];
+       // [self.gravity addItem:card];
+
+        //[self.collision addItem:card];
+    }
+    */
     
     
     
@@ -167,6 +191,13 @@
     
 }
 
+-(void) movePile:(CGPoint)translation sender:(UIView *)sender{
+    for (UIView * view in self.cardsButtons) {
+        if (view != sender) {
+            view.center = CGPointMake(view.center.x+translation.x, view.center.y+translation.y);
+        }
+    }
+}
 
 
 - (void)didReceiveMemoryWarning {
@@ -221,10 +252,10 @@
 - (UIImage *)backgrounfImageForCard:(Card *)card {
   return [UIImage imageNamed:@"cardfront"];
 }
-
+#pragma mark - updateUI
 - (void)updateUI {
     
-    NSMutableArray * viewsToBeDeleted=[[NSMutableArray alloc] init];
+    
     NSMutableArray * cardsToBeDeleted=[[NSMutableArray alloc] init];
 
     //linking model cards to view cards
@@ -238,25 +269,28 @@
     cardButton.count = card.count;
     cardButton.chosen=card.chosen;
 
-    cardButton.enabled = !card.isMatched;//causes a bug
+    cardButton.enabled = !card.isMatched;
       if (card.isMatched) {
-          [viewsToBeDeleted addObject:cardButton];
+          [self.viewsToBeDeleted addObject:cardButton];
           [cardsToBeDeleted addObject:card];
       }
   }
-    
-    //clean removed cards from view
-    for (SetCardView * cardView in viewsToBeDeleted) {
-        [cardView removeFromSuperview];
-        [self.cardsButtons removeObject:cardView];
-        
-    }
 
-    //clean removed cards from model
-    for (ASetCard * card in cardsToBeDeleted) {
-        [self.game.cards removeObject:card];
+  if ([self.viewsToBeDeleted count]) {
+      NSLog(@"%lu cards are registered for deletion.", [self.viewsToBeDeleted count]);
+      // clean removed cards from model
+      for (ASetCard *card in cardsToBeDeleted) {
+          [self.game.cards removeObject:card];
+      }
+      
+    // clean removed cards from view
+    for (SetCardView *cardView in self.viewsToBeDeleted) {
+        [self.gravity addItem:cardView];
+        [self.collision addItem:cardView];
+        [self.itemBehaviour addItem:cardView];
+        [self.cardsButtons removeObject:cardView];
     }
-    
+  }
     self.scoreLabel.text =
     [NSString stringWithFormat:@"Score: %ld", (long)self.game.score];
     [self allignCards];
@@ -280,20 +314,25 @@
             frame.origin.y=yStart+row*([self cardHeight]*(1+VGapRatio));
             frame.size.height=[self cardHeight];
             frame.size.width=[self cardWidth];
-            [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{(((SetCardView *)[self.cardsButtons objectAtIndex:(row*NumberOfCardsInRow+col)])).frame=frame; } completion:^(BOOL finished){; }];
+            [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionTransitionFlipFromBottom animations:^{(((SetCardView *)[self.cardsButtons objectAtIndex:(row*NumberOfCardsInRow+col)])).frame=frame; } completion:^(BOOL finished){; }];
             NSLog(@"card number [%ld] positioned at [%f,%f]",(row*NumberOfCardsInRow+col),frame.origin.x,frame.origin.y );
     }
-        NSLog(@"cards count:%ld",[self.cardsButtons count]);
+        NSLog(@"cards count:%ld",(unsigned long)[self.cardsButtons count]);
 }
 
-
+-(void) handlePilePan:(UIPanGestureRecognizer *) recognizer{
+    if (self.gathered) {
+        
+    }
+    NSLog(@"handling pile pan...");
+}
 
 - (void)touchCard:(id)sender {
   // disable changing of game mode control segment
   //[[self gameModeSegmentControl] setEnabled:NO];
     if (!self.gathered) {
         NSUInteger chosenButtonIndex = [self.cardsButtons indexOfObject:sender];
-        NSLog(@"chosenButtonIndex: %lu", chosenButtonIndex);
+        NSLog(@"chosenButtonIndex: %lu", (unsigned long)chosenButtonIndex);
         
         [self.game chooseCardAtIndex:chosenButtonIndex];
         [self updateUI];
@@ -307,7 +346,17 @@
     NSInteger index=[self.cardsButtons indexOfObject:card];//get index in view
     [self.game removeCardAtIndex:index];//remove from model
     [self.cardsButtons removeObject:card]; //remove from outlet array
-    NSLog(@"remaining [%lu] cards.",[[self cardsButtons] count]);
+    NSLog(@"remaining [%lu] cards.",(unsigned long)[[self cardsButtons] count]);
+}
+
+- (void)dynamicAnimatorDidPause:(UIDynamicAnimator *)animator {
+    NSLog(@">>>>>>>>>>>>>>>>>>>>>>>pause");
+    for (SetCardView *cardView in self.viewsToBeDeleted) {
+        [self.gravity removeItem:cardView];
+        [self.collision removeItem:cardView];
+        [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveLinear animations:^{ cardView.alpha=0.0;} completion:^(BOOL finish){if(finish){[cardView removeFromSuperview];}}];
+    }
+    [self.viewsToBeDeleted removeAllObjects];
 }
 
 @end

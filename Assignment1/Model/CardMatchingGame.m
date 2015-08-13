@@ -62,7 +62,7 @@
   if (index < [self.cards count]) {
     return self.cards[index];
   } else {
-    NSLog(@"card not found with index: %lu", index);
+    NSLog(@"card not found with index: %lu", (unsigned long)index);
     return nil;
   }
 }
@@ -286,8 +286,8 @@ static const int COST_TO_CHOOSE = 1;
     chosenCards = [self getChosenCards:self.cards];
     [chosenCards addObject:card];
 
-    NSLog(@"Other chosen cards: %lu , game mode: %lu", [chosenCards count],
-          [self numberOfCardsToMatch]);
+    NSLog(@"Other chosen cards: %lu , game mode: %lu", (unsigned long)[chosenCards count],
+          (unsigned long)[self numberOfCardsToMatch]);
 
     // only if reached the needed number of cards to match
     if ([chosenCards count] == ([self numberOfCardsToMatch])) {
@@ -337,7 +337,7 @@ static const int COST_TO_CHOOSE = 1;
     Card * card= [[self deck] drawRandomCard];
     if (card) {
         [self.cards addObject:card];
-        NSLog(@"added a card, total cards number %ld.",[self.cards count]);
+        NSLog(@"added a card, total cards number %ld.",(unsigned long)[self.cards count]);
         
     } else{
         NSLog(@">>>>>>>>>>>>>>>No more cards.");

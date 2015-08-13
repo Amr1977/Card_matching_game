@@ -106,7 +106,7 @@
   //[[self gameModeSegmentControl] setEnabled:NO];
 
   NSUInteger chosenButtonIndex = [self.playingCards indexOfObject:sender];
-  NSLog(@"touchCardButton: %lu", chosenButtonIndex);
+  NSLog(@"touchCardButton: %lu", (unsigned long)chosenButtonIndex);
 
   [self.game chooseCardAtIndex:chosenButtonIndex];
   [self updateUI];

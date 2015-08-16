@@ -30,7 +30,8 @@
 
 #pragma mark - cardWidth
 - (CGFloat)cardWidth {
-    CGFloat width= (self.view.superview.frame.size.width/([self numberOfCardsPerRow]))/(1+HGapRatio);//here is the magic point.
+    
+    CGFloat width= (self.view.superview.frame.size.width/((([self numberOfCardsPerRow]))*(1+HGapRatio)+HGapRatio));//here is the magic point.
     NSLog(@"card width :%f",width);
     return width;
 }
@@ -308,7 +309,7 @@
     CGRect frame;
     NSInteger row = cardNumber / numberOfCardsInRow;
     NSInteger col = cardNumber - row * numberOfCardsInRow;
-    frame.origin.x = xStart + col * ((cardWidth) * (1 + HGapRatio));
+    frame.origin.x = xStart + col * ((cardWidth) * (1 + HGapRatio));//needs considering trailing space
     frame.origin.y = yStart + row * (cardHeight * (1 + VGapRatio));
     frame.size.height = cardHeight;
     frame.size.width = cardWidth;
@@ -331,7 +332,7 @@
     CGFloat height = width * SetCardHeightToWidthRatio;
     NSInteger numberOfRows = [self.cardsButtons count]/cardsPerRow +1;
     BOOL result = ((numberOfRows*(height* (1 + VGapRatio))+self.scoreLabel.frame.size.height+self.tabBarController.tabBar.frame.size.height+height * (VGapRatio)) < self.view.superview.frame.size.height);
-    NSLog(@"fitsInScreenHeight(%lu), result: %@, cards count: %lu",cardsPerRow, result?@"pass":@"fail", [self.cardsButtons count]);
+    NSLog(@"fitsInScreenHeight(%lu), result: %@, cards count: %lu",(long)cardsPerRow, result?@"pass":@"fail", (unsigned long)[self.cardsButtons count]);
     return result;
 }
 

@@ -7,7 +7,7 @@
 //
 
 #import "SetGameViewController.h"
-#define NumberOfCardsInRow 4
+//#define NumberOfCardsInRow 4
 #define SetCardCardToSuperViewWidthRatio 1 / (NumberOfCardsInRow + 1)
 #define SetCardHeightToWidthRatio 0.60
 #define HGapRatio 0.2
@@ -28,9 +28,11 @@
 
 @implementation SetGameViewController
 
+#pragma mark - cardWidth
 - (CGFloat)cardWidth {
-  return self.view.superview.frame.size.width *
-         SetCardCardToSuperViewWidthRatio;
+    CGFloat width= (self.view.superview.frame.size.width/([self numberOfCardsPerRow]))/(1+HGapRatio);//here is the magic point.
+    NSLog(@"card width :%f",width);
+    return width;
 }
 
 - (CGFloat)cardHeight {
@@ -117,7 +119,7 @@
   // Do any additional setup after loading the view.
   [[NSNotificationCenter defaultCenter]
       addObserver:self
-         selector:@selector(allignCards)
+         selector:@selector(layoutCards)
              name:UIDeviceOrientationDidChangeNotification
            object:nil];
   UIPinchGestureRecognizer *pgr =
@@ -258,7 +260,7 @@
 
   if ([self.viewsToBeDeleted count]) {
     NSLog(@"%lu cards are registered for deletion.",
-          [self.viewsToBeDeleted count]);
+          (unsigned long)[self.viewsToBeDeleted count]);
     // clean removed cards from model
     for (ASetCard *card in cardsToBeDeleted) {
       [self.game.cards removeObject:card];
@@ -274,49 +276,65 @@
   }
   self.scoreLabel.text =
       [NSString stringWithFormat:@"Score: %ld", (long)self.game.score];
-  [self allignCards];
+  [self layoutCards];
   [[self game] logSolution];
 }
 
-- (void)allignCards {
+-(NSInteger) numberOfCardsPerRow{
+    NSInteger numberOfCards=1;
+    while (![self fitsInScreenHeight:numberOfCards]) {
+        numberOfCards+=1;
+    }
+    NSLog(@"Selected Number of cards per row: %ld",(long)numberOfCards);
+    return  numberOfCards;
+}
+
+- (void)layoutCards {
+    
   // arrange each 4 cards at a row
   self.gathered = false;
-  CGFloat yStart =
-      self.scoreLabel.frame.origin.y + self.scoreLabel.frame.size.height + 10;
-  CGFloat xStart = [self cardWidth] * HGapRatio;
+    CGFloat cardWidth= [self cardWidth];
+    CGFloat cardHeight=[self cardHeight];
+    NSInteger numberOfCardsInRow=[self numberOfCardsPerRow];//
+
+    CGFloat yStart =
+      self.scoreLabel.frame.origin.y + self.scoreLabel.frame.size.height + cardHeight * (VGapRatio);
+  CGFloat xStart = cardWidth * HGapRatio;
   // SetCardView * cardView in self.cardsButtons
 
+    
   for (NSInteger cardNumber = 0; cardNumber < ([self.cardsButtons count]);
        cardNumber++) {
     CGRect frame;
-    NSInteger row = cardNumber / NumberOfCardsInRow;
-    NSInteger col = cardNumber - row * NumberOfCardsInRow;
-    frame.origin.x = xStart + col * (([self cardWidth]) * (1 + HGapRatio));
-    frame.origin.y = yStart + row * ([self cardHeight] * (1 + VGapRatio));
-    frame.size.height = [self cardHeight];
-    frame.size.width = [self cardWidth];
+    NSInteger row = cardNumber / numberOfCardsInRow;
+    NSInteger col = cardNumber - row * numberOfCardsInRow;
+    frame.origin.x = xStart + col * ((cardWidth) * (1 + HGapRatio));
+    frame.origin.y = yStart + row * (cardHeight * (1 + VGapRatio));
+    frame.size.height = cardHeight;
+    frame.size.width = cardWidth;
     [UIView animateWithDuration:0.5
         delay:0.0
-        options:UIViewAnimationOptionTransitionFlipFromBottom
+        options:UIViewAnimationOptionTransitionCurlDown
         animations:^{
           (((SetCardView *)[self.cardsButtons
-               objectAtIndex:(row * NumberOfCardsInRow + col)]))
+               objectAtIndex:(row * numberOfCardsInRow + col)]))
               .frame = frame;
         }
-        completion:^(BOOL finished) {
-          ;
+        completion:^(BOOL finished) {//NSLog(@"animation completed.<<<<<<<<<<<<<<<<<<<<<<<<<<");
         }];
-    NSLog(@"card number [%ld] positioned at [%f,%f]",
-          (row * NumberOfCardsInRow + col), frame.origin.x, frame.origin.y);
   }
-  NSLog(@"cards count:%ld", (unsigned long)[self.cardsButtons count]);
 }
 
-- (void)handlePilePan:(UIPanGestureRecognizer *)recognizer {
-  if (self.gathered) {
-  }
-  NSLog(@"handling pile pan...");
+-(BOOL) fitsInScreenHeight:(NSInteger)cardsPerRow{
+    
+    CGFloat width = ((self.view.frame.size.width/(cardsPerRow)))/(1+HGapRatio);
+    CGFloat height = width * SetCardHeightToWidthRatio;
+    NSInteger numberOfRows = [self.cardsButtons count]/cardsPerRow +1;
+    BOOL result = ((numberOfRows*(height* (1 + VGapRatio))+self.scoreLabel.frame.size.height+self.tabBarController.tabBar.frame.size.height+height * (VGapRatio)) < self.view.superview.frame.size.height);
+    NSLog(@"fitsInScreenHeight(%lu), result: %@, cards count: %lu",cardsPerRow, result?@"pass":@"fail", [self.cardsButtons count]);
+    return result;
 }
+
 
 - (void)touchCard:(id)sender {
   // disable changing of game mode control segment
@@ -328,7 +346,7 @@
     [self.game chooseCardAtIndex:chosenButtonIndex];
     [self updateUI];
   } else {
-    [self allignCards];
+    [self layoutCards];
   }
 }
 
@@ -341,7 +359,7 @@
 }
 
 - (void)dynamicAnimatorDidPause:(UIDynamicAnimator *)animator {
-  NSLog(@">>>>>>>>>>>>>>>>>>>>>>>pause");
+  NSLog(@">>>>>>>>>>>>>>>>>>>>>>>dynamicAnimatorDidPause ");
   for (SetCardView *cardView in self.viewsToBeDeleted) {
     [self.gravity removeItem:cardView];
     [self.collision removeItem:cardView];

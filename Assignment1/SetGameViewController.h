@@ -23,7 +23,6 @@
 
 - (void)touchCard:(id)sender;
 - (void)removeCardSubview:(SetCardView *)card;
-- (void)handlePilePan:(UIPanGestureRecognizer *)recognizer;
 - (void)movePile:(CGPoint)translation sender:(UIView *)sender;
 
 @end

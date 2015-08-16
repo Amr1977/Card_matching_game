@@ -44,7 +44,7 @@
 - (void)handleTap {
   [UIView transitionWithView:self
       duration:0.5
-      options:UIViewAnimationOptionTransitionFlipFromTop
+      options:UIViewAnimationOptionTransitionCrossDissolve
       animations:^{
         ;
       }

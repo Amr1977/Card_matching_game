@@ -7,7 +7,8 @@
 //
 
 #import "SetGameViewController.h"
-//#define NumberOfCardsInRow 4
+
+#define DebugMode 1;
 #define SetCardCardToSuperViewWidthRatio 1 / (NumberOfCardsInRow + 1)
 #define SetCardHeightToWidthRatio 0.60
 #define HGapRatio 0.2
@@ -26,13 +27,18 @@
 
 @end
 
-@implementation SetGameViewController
+@implementation SetGameViewController{
+    BOOL debug;
+}
 
 #pragma mark - cardWidth
 - (CGFloat)cardWidth {
-    
+    //
     CGFloat width= (self.view.superview.frame.size.width/((([self numberOfCardsPerRow]))*(1+HGapRatio)+HGapRatio));//here is the magic point.
-    NSLog(@"card width :%f",width);
+    if (debug) {
+        NSLog(@"card width :%f",width);
+    }
+    
     return width;
 }
 
@@ -57,24 +63,27 @@
 }
 
 - (void)addCard {
-  [[self game] addCard];
-  SetCardView *newView = [[SetCardView alloc]
-      initWithFrame:CGRectMake(0, 0, [self cardWidth], [self cardHeight])];
-  [UIView animateWithDuration:0.5
-      delay:0.0
-      options:UIViewAnimationOptionCurveLinear
-      animations:^{
-        newView.frame = CGRectMake(0, 0, [self cardWidth], [self cardHeight]);
-      }
-      completion:^(BOOL finish) {
-        ;
-      }];
-
-  newView.viewControllerDelegate = self;
-
-  [[self view] addSubview:newView];
-
-  [[self cardsButtons] addObject:newView];
+  Card * card=[[self game] addCard];
+    if (card) {
+        SetCardView *newView = [[SetCardView alloc]
+                                initWithFrame:CGRectMake(0, 0, [self cardWidth], [self cardHeight])];
+        [UIView animateWithDuration:0.5
+                              delay:0.0
+                            options:UIViewAnimationOptionCurveLinear
+                         animations:^{
+                             newView.frame = CGRectMake(0, 0, [self cardWidth], [self cardHeight]);
+                         }
+                         completion:^(BOOL finish) {
+                             ;
+                         }];
+        
+        newView.viewControllerDelegate = self;
+        
+        [[self view] addSubview:newView];
+        
+        [[self cardsButtons] addObject:newView];
+    }
+  
 }
 
 - (IBAction)moreCards:(UIButton *)sender {
@@ -105,11 +114,10 @@
         }];
   }
   [self.cardsButtons removeAllObjects];
-
-  while ([self.cardsButtons count] < InitialCardNumber) {
-    [self moreCards:nil];
-  }
   [self newGame];
+  while ([self.cardsButtons count] < InitialCardNumber) {
+    [self addCard];
+  }
   [self updateUI];
 }
 #pragma mark - view did load
@@ -238,6 +246,7 @@
   return [UIImage imageNamed:@"cardfront"];
 }
 #pragma mark - updateUI
+//TODO: matched cards should be deleted automatically at the model, the controller should reflect that on the view.
 - (void)updateUI {
   NSMutableArray *cardsToBeDeleted = [[NSMutableArray alloc] init];
 
@@ -281,22 +290,66 @@
   [[self game] logSolution];
 }
 
--(NSInteger) numberOfCardsPerRow{
-    NSInteger numberOfCards=1;
-    while (![self fitsInScreenHeight:numberOfCards]) {
-        numberOfCards+=1;
+//This method checks if the overall cards height will fit in screen given that number of cards per row
+-(BOOL) fitsInScreenHeight:(NSInteger)cardsPerRow{
+    if (!cardsPerRow) {
+        return FALSE;
     }
-    NSLog(@"Selected Number of cards per row: %ld",(long)numberOfCards);
-    return  numberOfCards;
+    CGFloat width = ((self.view.frame.size.width/(cardsPerRow)))/(1+HGapRatio);
+    CGFloat height = width * SetCardHeightToWidthRatio;
+    NSInteger numberOfRows = [self.cardsButtons count]/cardsPerRow +1;
+    CGFloat overallCardsHeight=(numberOfRows*(height* (1 + VGapRatio))+height * (VGapRatio));
+    BOOL result = (overallCardsHeight+self.scoreLabel.frame.size.height+self.scoreLabel.frame.origin.y+self.tabBarController.tabBar.frame.size.height < self.view.superview.frame.size.height);
+    NSLog(@"fitsInScreenHeight(%lu), result: %@, cards count: %lu",(long)cardsPerRow, result?@"pass":@"fail", (unsigned long)[self.cardsButtons count]);
+    return result;
 }
 
+-(NSInteger) numberOfCardsPerRow{
+    NSDate *date = [NSDate date];
+    double timePassed_ms;
+    BOOL binaryMethod=FALSE;
+    NSInteger optimalNumberOfCardsPerRow;
+    if (binaryMethod) {
+        optimalNumberOfCardsPerRow = [self numberOfCardsPerRowBinarySearchStart:1 end:[self.cardsButtons count]];
+    }else{
+        NSInteger numberOfCardsPerRow=1;//initial assumption: one card per row
+        while (![self fitsInScreenHeight:numberOfCardsPerRow]) {
+            numberOfCardsPerRow+=1;
+        }
+        NSLog(@"Selected Number of cards per row: %ld",(long)numberOfCardsPerRow);
+        optimalNumberOfCardsPerRow = numberOfCardsPerRow;
+    }
+    timePassed_ms = [date timeIntervalSinceNow] * -1000.0;
+    NSLog(@"numberOfCardsPerRow: Elapsed time: %f",timePassed_ms);
+    return optimalNumberOfCardsPerRow;
+}
+
+-(NSInteger) numberOfCardsPerRowBinarySearchStart:(NSInteger)start end:(NSInteger)end{
+    NSInteger middle=(start+end)/2;
+    NSLog(@"Binary searching: %ld, %ld", start,end);
+    BOOL middlePass=[self fitsInScreenHeight:middle];
+    if ( middlePass && ![self fitsInScreenHeight:(middle-1)]) {
+        NSLog(@"Binary Hit at: %ld", middle);
+        return middle;
+    }
+    if ( !middlePass && [self fitsInScreenHeight:(middle+1)]) {
+        NSLog(@"Binary Hit at: %ld", (middle+1));
+        return (middle+1);
+    }
+    if (middlePass) {
+        return [self numberOfCardsPerRowBinarySearchStart:start end:(middle-1)];
+    }else{
+        return [self numberOfCardsPerRowBinarySearchStart:(middle+1) end:end];
+    }
+    
+}
 - (void)layoutCards {
     
   // arrange each 4 cards at a row
   self.gathered = false;
     CGFloat cardWidth= [self cardWidth];
     CGFloat cardHeight=[self cardHeight];
-    NSInteger numberOfCardsInRow=[self numberOfCardsPerRow];//
+    NSInteger numberOfCardsInRow=[self numberOfCardsPerRow];
 
     CGFloat yStart =
       self.scoreLabel.frame.origin.y + self.scoreLabel.frame.size.height + cardHeight * (VGapRatio);
@@ -326,15 +379,7 @@
   }
 }
 
--(BOOL) fitsInScreenHeight:(NSInteger)cardsPerRow{
-    
-    CGFloat width = ((self.view.frame.size.width/(cardsPerRow)))/(1+HGapRatio);
-    CGFloat height = width * SetCardHeightToWidthRatio;
-    NSInteger numberOfRows = [self.cardsButtons count]/cardsPerRow +1;
-    BOOL result = ((numberOfRows*(height* (1 + VGapRatio))+self.scoreLabel.frame.size.height+self.tabBarController.tabBar.frame.size.height+height * (VGapRatio)) < self.view.superview.frame.size.height);
-    NSLog(@"fitsInScreenHeight(%lu), result: %@, cards count: %lu",(long)cardsPerRow, result?@"pass":@"fail", (unsigned long)[self.cardsButtons count]);
-    return result;
-}
+
 
 
 - (void)touchCard:(id)sender {

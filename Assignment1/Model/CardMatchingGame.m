@@ -244,11 +244,12 @@ static const int COST_TO_CHOOSE = 1;
 }
 
 - (void)logSolution {
-  for (NSInteger i = 0; i < [self.cards count] - 2; i++) {
+    BOOL found=false;
+  for (NSInteger i = 0; (i < [self.cards count] - 2)&& !found; i++) {
     if (!((ASetCard *)self.cards[i]).matched) {
-      for (NSInteger j = i + 1; j < [self.cards count] - 1; j++) {
+      for (NSInteger j = i + 1; (j < [self.cards count] - 1)&& !found; j++) {
         if (!((ASetCard *)self.cards[j]).matched) {
-          for (NSInteger k = j + 1; k < [self.cards count]; k++) {
+          for (NSInteger k = j + 1;(k < [self.cards count])&& !found; k++) {
             NSMutableArray *cardGroup = [[NSMutableArray alloc]
                 initWithObjects:self.cards[i], self.cards[j], self.cards[k],
                                 nil];
@@ -256,6 +257,8 @@ static const int COST_TO_CHOOSE = 1;
               if ([CardMatchingGame setGameMatcher:cardGroup]) {
                 NSLog(@"Cheat: match at [%ld, %ld, %ld]", (long)i, (long)j,
                       (long)k);
+                  found=TRUE;
+                  
               }
             }
           }
